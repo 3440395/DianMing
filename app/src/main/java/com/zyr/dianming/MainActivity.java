@@ -1,13 +1,16 @@
 package com.zyr.dianming;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
@@ -20,9 +23,6 @@ import com.zyr.teacher.CoreService;
 import com.zyr.teacher.Helper;
 
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,10 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
         Helper.getInstance().init(this);
 
+        WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        if (!wifiManager.isWifiEnabled()) {
+            System.out.println("=================");
+            wifiManager.setWifiEnabled(true);
+        }
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String IPAddress = intToIp(wifiInfo.getIpAddress());
+        System.out.println("IPAddress-->>" + IPAddress);
 
-        WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
-        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-        Log.e(TAG, "onCreate" + ip);
+        DhcpInfo dhcpinfo = wifiManager.getDhcpInfo();
+        String serverAddress = intToIp(dhcpinfo.serverAddress);
+        System.out.println("serverAddress-->>" + serverAddress);
+
+        Toast.makeText(this,IPAddress+"   "+serverAddress,Toast.LENGTH_LONG).show();
 
         btn1 = (Button) findViewById(R.id.btn1);
         btn2 = (Button) findViewById(R.id.btn2);
@@ -89,5 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "设置了");
             }
         });
+    }
+
+
+    private String intToIp(int paramInt)
+    {
+        return (paramInt & 0xFF) + "." + (0xFF & paramInt >> 8) + "." + (0xFF & paramInt >> 16) + "."
+                + (0xFF & paramInt >> 24);
     }
 }
