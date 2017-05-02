@@ -31,10 +31,7 @@ public class CoreService extends Service {
                 .listener(mListener)
                 .build();
 
-        // Create server.
         mServer = andServer.createServer();
-
-
     }
 
 

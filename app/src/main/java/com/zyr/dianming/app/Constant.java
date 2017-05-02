@@ -14,8 +14,11 @@ public class Constant {
     public static final SimpleDateFormat secondFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 
+    public static  String ip = "localhost";
+
+
     //本机
-    public static final String baseurl = "http://localhost:8080/";
+    public static  String baseurl = "http://"+ip+":8080/";
 //    public static final String baseurl = "http://192.168.1.116:8080/";
 //    public static final String baseurl = "http://10.88.4.1:8080/";
 

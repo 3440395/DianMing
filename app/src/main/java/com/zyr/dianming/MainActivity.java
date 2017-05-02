@@ -18,93 +18,67 @@ import com.yolanda.nohttp.rest.Request;
 import com.yolanda.nohttp.rest.Response;
 import com.zyr.common.net.CallServer;
 import com.zyr.common.net.HttpListener;
+import com.zyr.common.util.NetUtil;
+import com.zyr.common.util.UrlUtil;
 import com.zyr.dianming.app.Constant;
 import com.zyr.teacher.CoreService;
 import com.zyr.teacher.Helper;
+import com.zyr.teacher.db.Dao;
 
 import org.json.JSONObject;
+
+import java.util.Calendar;
+
+import static android.R.attr.x;
+import static com.zyr.dianming.app.Constant.ip;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private Button btn1;
-    private Button btn2;
+    private Dao dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dao = new Dao(MainActivity.this);
 
-        Helper.getInstance().init(this);
-
-        WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()) {
-            System.out.println("=================");
-            wifiManager.setWifiEnabled(true);
-        }
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        String IPAddress = intToIp(wifiInfo.getIpAddress());
-        System.out.println("IPAddress-->>" + IPAddress);
-
-        DhcpInfo dhcpinfo = wifiManager.getDhcpInfo();
-        String serverAddress = intToIp(dhcpinfo.serverAddress);
-        System.out.println("serverAddress-->>" + serverAddress);
-
-        Toast.makeText(this,IPAddress+"   "+serverAddress,Toast.LENGTH_LONG).show();
-
-        btn1 = (Button) findViewById(R.id.btn1);
-        btn2 = (Button) findViewById(R.id.btn2);
-
-        btn1.setOnClickListener(new View.OnClickListener() {
+        Button add = (Button) findViewById(R.id.add);
+        Button update = (Button) findViewById(R.id.update);
+        Button update1 = (Button) findViewById(R.id.update1);
+        Button update2 = (Button) findViewById(R.id.update2);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startService(new Intent(MainActivity.this, CoreService.class));
-//                startActivity(new Intent(MainActivity.this, TestActivity.class));
+                boolean 薛凯 = dao.createCourse(1, "薛凯");
+               Log.e("MainActivity","onClick"+薛凯);
             }
         });
-
-        btn2.setOnClickListener(new View.OnClickListener() {
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Request<JSONObject> loginRequest = NoHttp.createJsonObjectRequest(Constant.url_test, RequestMethod.POST);
-
-
-//                loginRequest.add("p1", Calendar.getInstance().getTime().toLocaleString());
-                loginRequest.add("你", "你好");
-                loginRequest.add("你1", "你好1");
-                loginRequest.add("你2", "你好2");
-                loginRequest.add("你33", "你好3");
-
-                CallServer.getRequestInstance().add(MainActivity.this, Constant.request_what_login, loginRequest, new HttpListener<JSONObject>() {
-                    @Override
-                    public void onSucceed(int what, Response<JSONObject> response) {
-                        JSONObject jsonObject = response.get();
-                        Log.e(TAG, "onSucceed" + jsonObject.toString());
-                    }
-
-                    @Override
-                    public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
-                        Log.e(TAG, "onFailed");
-                    }
-                }, true, true, "加载中");
+                boolean 薛凯 = dao.setPresident(1, "薛凯", 10);
+                Log.e("MainActivity","onClick"+薛凯);
             }
         });
-    }
-
-    public void setTextView(final String s) {
-        runOnUiThread(new Runnable() {
+        update1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                btn2.setText(s);
-                Log.e(TAG, "设置了");
+            public void onClick(View v) {
+                boolean 薛凯1 = dao.setPresident(1, "薛凯1", 10);
+                Log.e("MainActivity","onClick"+薛凯1);
+
             }
         });
-    }
+        update2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean 薛凯 = dao.createCourse(2, "薛凯");
+                Log.e("MainActivity","onClick"+薛凯);
 
+            }
+        });
 
-    private String intToIp(int paramInt)
-    {
-        return (paramInt & 0xFF) + "." + (0xFF & paramInt >> 8) + "." + (0xFF & paramInt >> 16) + "."
-                + (0xFF & paramInt >> 24);
     }
 }
+
+

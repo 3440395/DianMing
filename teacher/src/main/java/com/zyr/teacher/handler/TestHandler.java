@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.yanzhenjie.andserver.RequestHandler;
 import com.zyr.common.net.HttpRequestParser;
+import com.zyr.teacher.Helper;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -26,10 +27,12 @@ public class TestHandler implements RequestHandler {
     @Override
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
         Map<String, String> params = HttpRequestParser.parse(request);
+        String value="未设置";
         for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
             Log.e(TAG, "Key:" + stringStringEntry.getKey() + "  value:" + stringStringEntry.getValue());
+            value=stringStringEntry.getValue();
         }
-
+        Helper.getInstance().showToast(value);
         try {
             JSONObject jsonObject = new JSONObject("{msg:呵呵}");
             StringEntity stringEntity = new StringEntity(jsonObject.toString(), "utf-8");
