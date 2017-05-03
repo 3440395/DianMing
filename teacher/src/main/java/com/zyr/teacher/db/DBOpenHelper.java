@@ -51,13 +51,15 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 "_id integer primary key autoincrement," +
                 "coursetimeid integer," +//签到是按照具体某天的某节课来说的，所以关联了coursetimeid
                 "time text," +//年月日
-                "studentid integer)");
+                "studentid integer," +
+                "unique  (coursetimeid,time,studentid))");
 
         db.execSQL("create table tb_leave(" +
                 "_id integer primary key autoincrement," +
-                "coursetimeid text," +
+                "coursetimeid integer," +
                 "time text," +//年月日
-                "studentid integer)");
+                "studentid integer," +
+                "unique  (coursetimeid,time,studentid))");
 
     }
 

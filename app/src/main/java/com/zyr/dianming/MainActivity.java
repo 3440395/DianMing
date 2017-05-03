@@ -1,17 +1,32 @@
 package com.zyr.dianming;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.zyr.common.net.NetUtil;
+import com.zyr.teacher.CoreService;
 import com.zyr.teacher.db.Dao;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Dao dao;
+
+
+    public static void main(String[] args) {
+        int[] str = {1, 2, 3};
+        changeStr(str);
+        System.out.println(str[0]);
+    }
+
+    private static void changeStr(int[] str) {
+        str[0] = 2;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +41,19 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean 数学 = dao.setCourseTime(1, 1);
-                Log.e("MainActivity", "onClick" + 数学);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean b = NetUtil.checkNet();
+                        Log.e(TAG, "onClick" + b);
+                    }
+                }).start();
             }
         });
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean 薛凯 = dao.setCourseTime(1, 1);
-                Log.e("MainActivity", "onClick" + 薛凯);
+                startService(new Intent(MainActivity.this, CoreService.class));
             }
         });
         update1.setOnClickListener(new View.OnClickListener() {

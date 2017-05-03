@@ -2,6 +2,8 @@ package com.zyr.common.util;
 
 import android.content.Context;
 
+import com.zyr.common.net.NetUtil;
+
 /**
  * Created by X.Sation on 2017/5/2.
  */
@@ -27,6 +29,9 @@ public class UrlUtil {
 
     public static String getUrl(String path) {
         StringBuffer sb = new StringBuffer();
+        if (serverAddress==null) {
+            serverAddress="localhost";
+        }
         sb.append("http://").append(serverAddress).append(":8080/").append(path);
         return sb.toString();
     }
