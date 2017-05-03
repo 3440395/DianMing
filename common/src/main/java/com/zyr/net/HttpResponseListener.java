@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zyr.common.net;
+package com.zyr.net;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 
 import com.yolanda.nohttp.Logger;
 import com.yolanda.nohttp.error.*;

@@ -1,4 +1,4 @@
-package com.zyr.common.bean;
+package com.zyr.bean;
 
 /**
  * Created by xuekai on 2017/5/3.

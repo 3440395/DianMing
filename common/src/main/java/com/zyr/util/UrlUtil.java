@@ -1,8 +1,8 @@
-package com.zyr.common.util;
+package com.zyr.util;
 
 import android.content.Context;
 
-import com.zyr.common.net.NetUtil;
+import com.zyr.net.NetUtil;
 
 /**
  * Created by X.Sation on 2017/5/2.

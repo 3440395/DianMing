@@ -1,4 +1,4 @@
-package com.zyr.common.util;
+package com.zyr.util;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zyr.common.R;
-import com.zyr.common.view.MaterialProgressDrawable;
+import com.zyr.view.MaterialProgressDrawable;
 
 
 public class ViewUtils {

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.zyr.common.bean.Student;
+import com.zyr.bean.Student;
 
 import java.util.ArrayList;
 import java.util.List;

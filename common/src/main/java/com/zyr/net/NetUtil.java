@@ -1,11 +1,11 @@
-package com.zyr.common.net;
+package com.zyr.net;
 
 import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
-import com.zyr.common.util.UrlUtil;
+import com.zyr.util.UrlUtil;
 
 import java.net.HttpURLConnection;
 import java.net.URL;

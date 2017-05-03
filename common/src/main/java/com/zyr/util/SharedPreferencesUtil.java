@@ -1,4 +1,4 @@
-package com.zyr.common.util;
+package com.zyr.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

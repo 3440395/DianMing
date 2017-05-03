@@ -1,4 +1,4 @@
-package com.zyr.common.net;
+package com.zyr.net;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;

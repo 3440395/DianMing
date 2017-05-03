@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.zyr.common.net.NetUtil;
+import com.zyr.net.NetUtil;
 import com.zyr.teacher.CoreService;
 import com.zyr.teacher.db.Dao;
 

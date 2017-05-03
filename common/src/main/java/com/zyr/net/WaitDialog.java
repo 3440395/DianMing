@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zyr.common.net;
+package com.zyr.net;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.view.Window;
 
 
-import com.yolanda.nohttp.rest.Response;
+public class WaitDialog extends ProgressDialog {
 
-
-public interface HttpListener<T> {
-
-    void onSucceed(int what, Response<T> response);
-
-    void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis);
+    public WaitDialog(Context context, String dialogMsg) {
+        super(context);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setCanceledOnTouchOutside(false);
+        setProgressStyle(STYLE_SPINNER);
+        setMessage(dialogMsg);
+    }
 
 }

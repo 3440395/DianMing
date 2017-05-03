@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.zyr.common.view;
+package com.zyr.view;
 
 import android.content.Context;
 import android.content.res.Resources;

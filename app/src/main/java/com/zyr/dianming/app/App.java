@@ -5,7 +5,7 @@ import android.os.Handler;
 
 import com.yolanda.nohttp.Logger;
 import com.yolanda.nohttp.NoHttp;
-import com.zyr.common.util.UrlUtil;
+import com.zyr.util.UrlUtil;
 
 
 public class App extends Application {
