@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.zyr.dianming.MainActivity">
+    tools:context="com.zyr.dianming.com.zyr.ui.activity.MainActivity">
 
     <Button
         android:layout_width="wrap_content"

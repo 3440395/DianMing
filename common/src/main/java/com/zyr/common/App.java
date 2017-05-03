@@ -1,10 +1,8 @@
-package com.zyr.dianming.app;
+package com.zyr.common;
 
 import android.app.Application;
 import android.os.Handler;
 
-import com.yolanda.nohttp.Logger;
-import com.yolanda.nohttp.NoHttp;
 import com.zyr.util.UrlUtil;
 
 
@@ -22,9 +20,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
-        NoHttp.initialize(this);
-        Logger.setTag("NoHttp");
-        Logger.setDebug(true);// 开始NoHttp的调试模式, 这样就能看到请求过程和日志
+//        NoHttp.initialize(this);
+//        Logger.setTag("NoHttp");
+//        Logger.setDebug(true);// 开始NoHttp的调试模式, 这样就能看到请求过程和日志
 
         UrlUtil.getInstance().init(this);
 

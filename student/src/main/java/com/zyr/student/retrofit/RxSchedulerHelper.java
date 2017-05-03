@@ -1,12 +1,9 @@
-package com.zyr.rx;
+package com.zyr.student.retrofit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by Administrator on 2016/12/31.
- */
 
 public class RxSchedulerHelper {
 

@@ -10,6 +10,16 @@ public class SharedPreferencesUtil {
     private static SharedPreferences sp;
     private static Context context;
 
+
+    public static void saveInt(Context context, String key, int values) {
+        context.getSharedPreferences("config", Context.MODE_PRIVATE).edit().putInt(key, values).commit();
+    }
+
+    public static int getInt(Context context, String key) {
+        int config = context.getSharedPreferences("config", Context.MODE_PRIVATE).getInt(key, -1);
+        return config;
+    }
+
     public static void saveString(Context context, String key, String values) {
         context.getSharedPreferences("config", Context.MODE_PRIVATE).edit().putString(key, values).commit();
     }

@@ -1,4 +1,4 @@
-package com.zyr.dianming.app;
+package com.zyr.common;
 
 import java.text.SimpleDateFormat;
 
@@ -44,6 +44,11 @@ public class Constant {
     public static final int reuqest_what_queryalltruck = 5;
     public static final int reuqest_what_addtrucksource = 6;
     public static final int reuqest_what_queryalltrucksource = 7;
+
+
+    //sp key
+    //程序当前的角色 0老师 1学生 -1需要选择
+    public static final String SP_KEY_CURRENT_ROLE = "sp_key_current_role";
 
 
 }

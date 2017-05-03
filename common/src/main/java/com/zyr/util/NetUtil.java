@@ -1,4 +1,4 @@
-package com.zyr.net;
+package com.zyr.util;
 
 import android.content.Context;
 import android.net.DhcpInfo;
