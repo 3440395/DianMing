@@ -1,36 +1,12 @@
 package com.zyr.dianming;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.yolanda.nohttp.NoHttp;
-import com.yolanda.nohttp.RequestMethod;
-import com.yolanda.nohttp.rest.Request;
-import com.yolanda.nohttp.rest.Response;
-import com.zyr.common.net.CallServer;
-import com.zyr.common.net.HttpListener;
-import com.zyr.common.util.NetUtil;
-import com.zyr.common.util.UrlUtil;
-import com.zyr.dianming.app.Constant;
-import com.zyr.teacher.CoreService;
-import com.zyr.teacher.Helper;
 import com.zyr.teacher.db.Dao;
-
-import org.json.JSONObject;
-
-import java.util.Calendar;
-
-import static android.R.attr.x;
-import static com.zyr.dianming.app.Constant.ip;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,31 +26,29 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean 薛凯 = dao.createCourse(1, "薛凯");
-               Log.e("MainActivity","onClick"+薛凯);
+                boolean 数学 = dao.setCourseTime(1, 1);
+                Log.e("MainActivity", "onClick" + 数学);
             }
         });
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean 薛凯 = dao.setPresident(1, "薛凯", 10);
-                Log.e("MainActivity","onClick"+薛凯);
+                boolean 薛凯 = dao.setCourseTime(1, 1);
+                Log.e("MainActivity", "onClick" + 薛凯);
             }
         });
         update1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean 薛凯1 = dao.setPresident(1, "薛凯1", 10);
-                Log.e("MainActivity","onClick"+薛凯1);
-
+                boolean 数学 = dao.setCourseTime(3, 1);
+                Log.e("MainActivity", "onClick" + 数学);
             }
         });
         update2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean 薛凯 = dao.createCourse(2, "薛凯");
-                Log.e("MainActivity","onClick"+薛凯);
-
+                boolean 数学 = dao.setCourseTime(1, 12);
+                Log.e("MainActivity", "onClick" + 数学);
             }
         });
 
