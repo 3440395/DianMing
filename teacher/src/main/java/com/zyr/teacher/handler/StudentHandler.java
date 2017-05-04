@@ -1,10 +1,9 @@
 package com.zyr.teacher.handler;
 
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.yanzhenjie.andserver.RequestHandler;
-import com.zyr.bean.Student;
+import com.zyr.entity.Student;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -30,7 +29,6 @@ public class StudentHandler implements RequestHandler {
 
         Student student = new Student();
         student.setName(name);
-        Log.e(TAG,"handle"+name);
         Gson gson = new Gson();
         String json = gson.toJson(student);
         StringEntity stringEntity = new StringEntity(json, "utf-8");

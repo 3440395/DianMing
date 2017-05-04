@@ -1,7 +1,8 @@
-package com.zyr.student.retrofit;
+package com.zyr.student.net.retrofit;
 
 
-import com.zyr.student.retrofit.api.ApiService;
+import com.zyr.student.net.retrofit.api.ApiService;
+import com.zyr.student.net.util.UrlUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,41 +18,40 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Networks {
     private String TAG = "Networks";
-    private String BASE_URL = "http://localhost:8080/";
 
     private int DEFAULT_TIMEOUT = 5;
 
     private Retrofit retrofit;
     private ApiService apiService;
     private static Networks networks;
+    private final OkHttpClient httpClientBuilder;
+
 
     //构造方法私有
     private Networks() {
 
-
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient httpClientBuilder = new OkHttpClient
+        httpClientBuilder = new OkHttpClient
                 .Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-//                .addInterceptor(logging)
                 .build();
 
 
-//        Gson gson = new GsonBuilder()
-//                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-//                .create();//使用 gson coverter，统一日期请求格式
+        initRetrofit(UrlUtil.getInstance().getUrl());
+    }
 
-
+    /**
+     * baseurl改变后需要重新初始化retrofit
+     */
+    public void initRetrofit(String baseUrl) {
         retrofit = new Retrofit.Builder()
                 .client(httpClientBuilder)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .build();
-
-
         apiService = retrofit.create(ApiService.class);
     }
 

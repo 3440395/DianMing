@@ -18,7 +18,6 @@ import com.zyr.util.SharedPreferencesUtil;
 
 public class ChooseRoleFragment extends BaseFragment {
 
-
     private Button student;
     private Button teacher;
 

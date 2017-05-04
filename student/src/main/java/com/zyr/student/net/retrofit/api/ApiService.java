@@ -1,7 +1,7 @@
-package com.zyr.student.retrofit.api;
+package com.zyr.student.net.retrofit.api;
 
 
-import com.zyr.bean.Student;
+import com.zyr.entity.Student;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

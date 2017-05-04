@@ -5,6 +5,8 @@
     android:orientation="vertical">
 
     <Button
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="还没有我的信息，添加"

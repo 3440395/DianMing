@@ -1,4 +1,4 @@
-package com.zyr.student.retrofit.subscirber;
+package com.zyr.subscirber;
 
 /**
  * Created by X.Sation on 2017/5/3.

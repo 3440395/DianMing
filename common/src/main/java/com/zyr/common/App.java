@@ -3,8 +3,6 @@ package com.zyr.common;
 import android.app.Application;
 import android.os.Handler;
 
-import com.zyr.util.UrlUtil;
-
 
 public class App extends Application {
     private Thread mUiThread = Thread.currentThread();
@@ -20,14 +18,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
-//        NoHttp.initialize(this);
-//        Logger.setTag("NoHttp");
-//        Logger.setDebug(true);// 开始NoHttp的调试模式, 这样就能看到请求过程和日志
-
-        UrlUtil.getInstance().init(this);
 
     }
 
+    public void initSomething(){
+
+    }
 
     public void mRunOnUiThread(Runnable runnable) {
         if (Thread.currentThread() != mUiThread) {
@@ -36,4 +32,5 @@ public class App extends Application {
             runnable.run();
         }
     }
+
 }
