@@ -1,4 +1,4 @@
-package com.zyr.student.retrofit;
+package com.zyr.util;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

@@ -8,14 +8,12 @@ import rx.Subscriber;
  * Created by X.Sation on 2017/5/3.
  */
 
-public class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCancelListener {
+public abstract class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCancelListener {
 
-    private SubscriberListener subscriberListener;
     private ProgressDialogHandler mProgressDialogHandler;
 
 
-    public ProgressSubscriber(Context context,SubscriberListener<T> subscriberListener) {
-        this.subscriberListener = subscriberListener;
+    public ProgressSubscriber(Context context) {
         mProgressDialogHandler = new ProgressDialogHandler(context,this, true);
     }
 
@@ -45,13 +43,11 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCanc
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
-        subscriberListener.onError(e);
+        e.printStackTrace();
     }
 
     @Override
-    public void onNext(T t) {
-        subscriberListener.onNext(t);
-    }
+    public abstract void onNext(T t) ;
 
     @Override
     public void onCancelProgress() {

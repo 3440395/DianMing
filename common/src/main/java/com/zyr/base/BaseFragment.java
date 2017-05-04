@@ -15,7 +15,7 @@ import android.view.ViewGroup;
  * 万物起源
  */
 public abstract class BaseFragment extends Fragment {
-
+    protected String TAG = this.getClass().getSimpleName();
     protected BaseActivity mActivity;
 
     @LayoutRes

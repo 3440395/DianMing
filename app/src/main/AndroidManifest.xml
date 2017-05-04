@@ -4,12 +4,13 @@
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name="com.zyr.common.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.zyr.common.App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.SplashActivity">
@@ -19,9 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.zyr.student.ui.activity.StudentLoginActivity"/>
-        <activity android:name="com.zyr.teacher.ui.activity.TeacherLoginActivity"/>
-        <service android:name="com.zyr.teacher.CoreService"/>
+        <activity android:name="com.zyr.student.ui.activity.StudentLoginActivity" />
+        <activity android:name="com.zyr.teacher.ui.activity.TeacherLoginActivity" />
+        <activity android:name="com.zyr.teacher.ui.activity.TeacherRegisterActivity" />
+
+        <service android:name="com.zyr.teacher.CoreService" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.zyr.dianming.ui.fragment;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 
@@ -7,6 +8,7 @@ import com.zyr.base.BaseFragment;
 import com.zyr.common.Constant;
 import com.zyr.common.R;
 import com.zyr.student.ui.activity.StudentLoginActivity;
+import com.zyr.teacher.CoreService;
 import com.zyr.teacher.ui.activity.TeacherLoginActivity;
 import com.zyr.util.SharedPreferencesUtil;
 

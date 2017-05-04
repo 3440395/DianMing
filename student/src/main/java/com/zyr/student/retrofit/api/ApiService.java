@@ -3,7 +3,10 @@ package com.zyr.student.retrofit.api;
 
 import com.zyr.bean.Student;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import rx.Observable;
 
 public interface ApiService {
@@ -28,6 +31,15 @@ public interface ApiService {
      */
     @GET("news/latest")
     Observable<Student> getLatestDaily();
+
+
+    /**
+     * 获取学生
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("queryStudent")
+    Observable<Student> query(@Field("name") String name);
 //
 //    /**
 //     * 获取以前的文章列表

@@ -11,7 +11,7 @@ import com.zyr.common.App;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
-
+    protected String TAG = this.getClass().getSimpleName();
     protected App mApp;
     protected BaseActivity mContext;
     protected Intent mIntent;
@@ -33,7 +33,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setListener();
         fetchData();
 
-        new Thread(()->{});
     }
 
     protected abstract void setLayout();

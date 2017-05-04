@@ -8,5 +8,4 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public interface SubscriberListener<T> {
     void onNext(T t);
-    void onError(Throwable e);
 }

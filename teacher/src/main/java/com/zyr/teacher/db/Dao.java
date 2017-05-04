@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.zyr.bean.Student;
+import com.zyr.bean.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Dao {
     public Dao(Context context) {
         dbHelper = new DBOpenHelper(context);
     }
+
 
     /**
      * 注册老师帐号
@@ -337,7 +339,29 @@ public class Dao {
         return student;
     }
 
+    /**
+     * 查询所有的老师
+     *
+     * @return
+     */
+    public List<Teacher> queryAllTeacher() {
+        List<Teacher> teachers = new ArrayList<>();
+        Teacher teacher = null;
+        readableDatabase = dbHelper.getReadableDatabase();
 
+        Cursor cursor = readableDatabase.query("tb_teacher", new String[]{"_id","name","sex","phone"}, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            teacher=new Teacher();
+            teacher.setId(getIntFromCursor(cursor,"_id"));
+            teacher.setName(getStringFromCursor(cursor,"name"));
+            teacher.setPhone(getStringFromCursor(cursor,"phone"));
+            teacher.setSex(getStringFromCursor(cursor,"sex"));
+            teachers.add(teacher);
+        }
+        cursor.close();
+        readableDatabase.close();
+        return teachers;
+    }
 
     private String getStringFromCursor(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));

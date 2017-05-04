@@ -2,12 +2,18 @@ package com.zyr.teacher.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 
 import com.zyr.base.BaseActivity;
+import com.zyr.bean.Teacher;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
+import com.zyr.util.RxSchedulerHelper;
+
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by X.Sation on 2017/5/3.
@@ -38,18 +44,42 @@ public class TeacherLoginActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-        addTeacher.setOnClickListener(
-                new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
+        addTeacher.setOnClickListener(v -> {
+            toActivity(TeacherRegisterActivity.class);
         });
-//        v -> {
-//        });
     }
 
     @Override
     protected void fetchData() {
         dao = new Dao(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAllTeacher();
+    }
+
+    /**
+     * 获取所有的老师
+     */
+    private void getAllTeacher() {
+
+        Observable
+                .create((Observable.OnSubscribe<List<Teacher>>) subscriber -> {
+                    List<Teacher> teachers = dao.queryAllTeacher();
+                    subscriber.onNext(teachers);
+                })
+                .compose(RxSchedulerHelper.io_main())
+                .subscribe(teachers -> Log.e(TAG, "getAllTeacher" + teachers));
+//        Observable<List<Teacher>>.create(subscriber -> {
+//                    List<Teacher> teachers = dao.queryAllTeacher();
+//                    subscriber.onNext(teachers);
+//                })
+//                .compose(RxSchedulerHelper.io_main())
+//                .subscribe(o -> {
+//
+//                });
+
     }
 }

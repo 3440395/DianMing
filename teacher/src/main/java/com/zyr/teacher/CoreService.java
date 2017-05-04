@@ -10,6 +10,7 @@ import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
 import com.yanzhenjie.andserver.website.AssetsWebsite;
 import com.zyr.teacher.handler.NetTestHandler;
+import com.zyr.teacher.handler.StudentHandler;
 
 /**
  * Created by xuekai on 2017/5/2.
@@ -27,6 +28,7 @@ public class CoreService extends Service {
                 .port(8080)
                 .timeout(10 * 1000)
                 .registerHandler("nettest", new NetTestHandler())
+                .registerHandler("queryStudent", new StudentHandler())
                 .website(new AssetsWebsite(mAssetManager, ""))
                 .listener(mListener)
                 .build();

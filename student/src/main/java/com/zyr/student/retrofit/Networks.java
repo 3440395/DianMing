@@ -6,6 +6,7 @@ import com.zyr.student.retrofit.api.ApiService;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,37 +16,54 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Networks {
+    private String TAG = "Networks";
+    private String BASE_URL = "http://localhost:8080/";
 
-    public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
-
-    private static final int DEFAULT_TIMEOUT = 5;
+    private int DEFAULT_TIMEOUT = 5;
 
     private Retrofit retrofit;
     private ApiService apiService;
+    private static Networks networks;
 
     //构造方法私有
     private Networks() {
-        //手动创建一个OkHttpClient并设置超时时间
-        OkHttpClient.Builder httpClientBuilder = new OkHttpClient
+
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient httpClientBuilder = new OkHttpClient
                 .Builder()
-                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+//                .addInterceptor(logging)
+                .build();
+
+
+//        Gson gson = new GsonBuilder()
+//                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+//                .create();//使用 gson coverter，统一日期请求格式
+
 
         retrofit = new Retrofit.Builder()
-                .client(httpClientBuilder.build())
+                .client(httpClientBuilder)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
 
+
         apiService = retrofit.create(ApiService.class);
     }
 
-    public static ApiService getApiService() {
-        return SingletonHolder.INSTANCE.apiService;
+    public static Networks getInstance() {
+        if (networks == null) {
+            networks = new Networks();
+        }
+        return networks;
     }
 
-    private static class SingletonHolder {
-        private static final Networks INSTANCE = new Networks();
+    public ApiService getApiService() {
+        return apiService;
     }
 
 
