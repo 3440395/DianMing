@@ -2,8 +2,11 @@ package com.zyr.teacher.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zyr.entity.Teacher;
@@ -12,12 +15,14 @@ import com.zyr.util.ViewUtils;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by X.Sation on 2017/5/4.
  */
 
-public class TeacherListAdapter extends RecyclerView.Adapter {
-
+public class TeacherListAdapter extends RecyclerView.Adapter<TeacherListAdapter.ViewHolder> {
+    private static final String TAG = "TeacherListAdapter";
     private Context context;
     private List<Teacher> datas;
     private final int dp_5;
@@ -33,29 +38,40 @@ public class TeacherListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = View.inflate(context, R.layout.item_teacher, null);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(dp_5,dp_5,dp_5,0);
+        layoutParams.setMargins(dp_5, dp_5, dp_5, 0);
         view.setLayoutParams(layoutParams);
         return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         String sex = datas.get(position).getSex();
-        if (sex!=null) {
-            sex=sex.equals("男")?"♂":"♀";
-        }else{
-            sex="-";
+        int imgRes;
+        if (sex != null) {
+            sex = sex.equals("男") ? "♂" : "♀";
+            imgRes = sex.equals("男") ? R.mipmap.head_teacher_man : R.mipmap.head_teacher_women;
+        } else {
+            sex = "-";
+            imgRes = R.mipmap.head_null;
         }
+
         String phone = datas.get(position).getPhone();
-        if (phone!=null) {
-            phone="-";
+        if (phone != null) {
+            phone = "-";
         }
         ((TextView) holder.itemView.findViewById(R.id.tv_name)).setText(datas.get(position).getName());
         ((TextView) holder.itemView.findViewById(R.id.tv_sex)).setText(sex);
         ((TextView) holder.itemView.findViewById(R.id.tv_phone)).setText(phone);
+        ((ImageView) holder.itemView.findViewById(R.id.iv_head)).setImageResource(imgRes);
+
+
+        holder.itemView.findViewById(R.id.root).setOnClickListener(v -> {
+            if (onItemClickListener != null) onItemClickListener.onItemClick(datas.get(position));
+        });
     }
 
     @Override
@@ -70,5 +86,15 @@ public class TeacherListAdapter extends RecyclerView.Adapter {
             super(itemView);
             this.itemView = itemView;
         }
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Teacher teacher);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

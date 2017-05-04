@@ -5,12 +5,12 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp"
-    android:clickable="true"
     app:cardPreventCornerOverlap="false"
-    android:background="?android:attr/selectableItemBackground"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
+        android:id="@+id/root"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -31,7 +31,6 @@
             android:layout_marginLeft="20dp"
             android:layout_alignTop="@id/iv_head"
             android:layout_toRightOf="@id/iv_head"
-            android:text="薛凯"
             android:textSize="25sp" />
 
         <TextView
@@ -41,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/tv_name"
-            android:text="♂"
             android:textSize="23sp" />
 
         <TextView
@@ -50,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/iv_head"
-            android:text="13433443344"
             android:layout_alignBottom="@id/iv_head"
             android:textSize="20sp" />
 

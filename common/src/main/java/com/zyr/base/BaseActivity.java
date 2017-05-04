@@ -27,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mIntent = getIntent();
         mBundle = mIntent.getExtras();
 
+
         setLayout();
         findViews();
         setupViews(mBundle);

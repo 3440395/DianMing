@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.zyr.student.ui.activity.StudentLoginActivity" />
+        <activity android:name="com.zyr.teacher.ui.activity.TeacherHomeActivity" />
         <activity android:name="com.zyr.teacher.ui.activity.TeacherLoginActivity" />
         <activity android:name="com.zyr.teacher.ui.activity.TeacherRegisterActivity" />
         <service android:name="com.zyr.teacher.CoreService" />
