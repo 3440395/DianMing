@@ -33,6 +33,8 @@ public class StudentLoginActivity extends BaseActivity {
 
     @Override
     protected void fetchData() {
-
+//        Networks.getApiService()
+//                .getLatestDaily()
+//                .subscribe(new ProgressSubscriber<Student>());
     }
 }

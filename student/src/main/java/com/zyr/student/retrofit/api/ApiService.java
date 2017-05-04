@@ -1,7 +1,10 @@
 package com.zyr.student.retrofit.api;
 
 
+import com.zyr.bean.Student;
 
+import retrofit2.http.GET;
+import rx.Observable;
 
 public interface ApiService {
 //    /**
@@ -19,12 +22,12 @@ public interface ApiService {
 //    Observable<SplashImgEntity> getLatestVersion(@Path("versionCode") String versionCode);
 //
 //
-//    /**
-//     * 获取最新文章列表
-//     * @return
-//     */
-//    @GET("news/latest")
-//    Observable<LatestDailyEntity> getLatestDaily();
+    /**
+     * 获取最新文章列表
+     * @return
+     */
+    @GET("news/latest")
+    Observable<Student> getLatestDaily();
 //
 //    /**
 //     * 获取以前的文章列表
