@@ -32,6 +32,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setupViews(mBundle);
         setListener();
         fetchData();
+
+        new Thread(()->{});
     }
 
     protected abstract void setLayout();

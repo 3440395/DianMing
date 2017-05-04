@@ -11,7 +11,9 @@ import com.zyr.base.BaseActivity;
 public class StudentLoginActivity extends BaseActivity {
     @Override
     protected void setLayout() {
-
+//        new Thread(()->{
+//            toast("studen ->");
+//        });
     }
 
     @Override

@@ -10,7 +10,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setLayout() {
-
+        new Thread(()->{});
     }
 
     @Override
