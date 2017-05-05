@@ -126,6 +126,7 @@ public class MToolbar extends Toolbar implements View.OnClickListener {
     }
 
     public interface OnTextViewClickListener {
+
         void onLeftClick();
 
         void onRightClick();
@@ -146,5 +147,10 @@ public class MToolbar extends Toolbar implements View.OnClickListener {
     public void setTitle(String titleContent) {
         tv_toolbar_title.setVisibility(VISIBLE);
         tv_toolbar_title.setText(titleContent);
+    }
+
+    @Override
+    public String getTitle() {
+        return (String) tv_toolbar_title.getText();
     }
 }

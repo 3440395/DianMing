@@ -21,7 +21,7 @@ public class TeacherListAdapter extends RecyclerView.Adapter<TeacherListAdapter.
     private static final String TAG = "TeacherListAdapter";
     private Context context;
     private List<Teacher> datas;
-    private final int dp_5;
+    private int dp_5;
 
     public TeacherListAdapter(Context context) {
         this.context = context;

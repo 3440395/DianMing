@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.zyr.entity.Course;
 import com.zyr.entity.Student;
 import com.zyr.entity.Teacher;
 
@@ -134,21 +135,7 @@ public class Dao {
         return id != -1;
     }
 
-    /**
-     * 创建一门课程（课程名和老师组成了一门课程）
-     *
-     * @return
-     */
-    public boolean createCourse(int teacherId, String name) {
-        writableDatabase = dbHelper.getWritableDatabase();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("teacherId", teacherId);
-        contentValues.put("name", name);
-        long id = writableDatabase.insert("tb_course", null, contentValues);
-        writableDatabase.close();
-        return id != -1;
-    }
 
     /**
      * 为课程设置班长（课程名和老师组成了一门课程）
@@ -196,24 +183,23 @@ public class Dao {
         return result;
     }
 
-
     /**
-     * 通过老师去创建一个唯一的课程
+     * 创建一门课程（课程名和老师组成了一门课程）
      *
-     * @param teacherid
-     * @param name
      * @return
      */
-    public boolean createCourseByTeacher(int teacherid, String name) {
+    public boolean createCourse(int teacherId, String name) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("teacherid", teacherid);
+        contentValues.put("teacherId", teacherId);
         contentValues.put("name", name);
         long id = writableDatabase.insert("tb_course", null, contentValues);
         writableDatabase.close();
         return id != -1;
     }
+
+
 
 
     /**
@@ -309,7 +295,7 @@ public class Dao {
         }
         Cursor cursor = readableDatabase.query("tb_course_student", new String[]{"studentId"}, "courseid=?", selectionArgs, null, null, null);
         while (cursor.moveToNext()) {
-            int studentId = cursor.getInt(cursor.getColumnIndex("studentid"));
+            int studentId = getIntFromCursor(cursor, "studentid");
             student = queryStudentByStudentId(studentId);
             students.add(student);
         }
@@ -330,9 +316,9 @@ public class Dao {
         Cursor cursor = readableDatabase.query("tb_student", new String[]{"name", "sex"}, "studentId=?", new String[]{String.valueOf(studentId)}, null, null, null);
         if (cursor.moveToNext()) {
             student = new Student();
-            student.setName(getStringFromCursor(cursor,"name"));
-            student.setSex(getStringFromCursor(cursor,"sex"));
-            student.setStudentid(getIntFromCursor(cursor,"studentId"));
+            student.setName(getStringFromCursor(cursor, "name"));
+            student.setSex(getStringFromCursor(cursor, "sex"));
+            student.setStudentid(getIntFromCursor(cursor, "studentId"));
         }
         cursor.close();
         readableDatabase.close();
@@ -349,19 +335,44 @@ public class Dao {
         Teacher teacher = null;
         readableDatabase = dbHelper.getReadableDatabase();
 
-        Cursor cursor = readableDatabase.query("tb_teacher", new String[]{"_id","name","sex","phone"}, null, null, null, null, null);
+        Cursor cursor = readableDatabase.query("tb_teacher", new String[]{"_id", "name", "sex", "phone"}, null, null, null, null, null);
         while (cursor.moveToNext()) {
-            teacher=new Teacher();
-            teacher.setId(getIntFromCursor(cursor,"_id"));
-            teacher.setName(getStringFromCursor(cursor,"name"));
-            teacher.setPhone(getStringFromCursor(cursor,"phone"));
-            teacher.setSex(getStringFromCursor(cursor,"sex"));
+            teacher = new Teacher();
+            teacher.setId(getIntFromCursor(cursor, "_id"));
+            teacher.setName(getStringFromCursor(cursor, "name"));
+            teacher.setPhone(getStringFromCursor(cursor, "phone"));
+            teacher.setSex(getStringFromCursor(cursor, "sex"));
             teachers.add(teacher);
         }
         cursor.close();
         readableDatabase.close();
         return teachers;
     }
+    /**
+     * 通过teacher查询所有的课程
+     * @param teacherid
+     * @return
+     */
+    public List<Course> queryCourseByTeacher(int teacherid) {
+        List<Course> courses = new ArrayList<>();
+        Course course = null;
+        readableDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = readableDatabase.query("tb_course", new String[]{"_id", "name", "presidentid"}, "teacherid=?", new String[]{teacherid + ""}, null, null, null);
+        while (cursor.moveToNext()) {
+            course = new Course();
+            int id = getIntFromCursor(cursor, "_id");
+            String name = getStringFromCursor(cursor, "name");
+            int presidentid = getIntFromCursor(cursor, "presidentid");
+            course.setId(id);
+            course.setName(name);
+            course.setPresidentid(presidentid);
+            courses.add(course);
+        }
+        cursor.close();
+        readableDatabase.close();
+        return courses;
+    }
+
 
     private String getStringFromCursor(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));

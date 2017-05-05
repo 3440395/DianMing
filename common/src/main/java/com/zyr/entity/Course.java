@@ -11,30 +11,20 @@ public class Course implements Parcelable {
     private int id;
     private String name;
     private int teacherid;
+    private Student student;
     private int presidentid;
 
     public Course() {
 
     }
 
+
     protected Course(Parcel in) {
         id = in.readInt();
         name = in.readString();
         teacherid = in.readInt();
+        student = in.readParcelable(Student.class.getClassLoader());
         presidentid = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeInt(teacherid);
-        dest.writeInt(presidentid);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<Course> CREATOR = new Creator<Course>() {
@@ -48,6 +38,14 @@ public class Course implements Parcelable {
             return new Course[size];
         }
     };
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     @Override
     public String toString() {
@@ -89,5 +87,19 @@ public class Course implements Parcelable {
 
     public void setPresidentid(int presidentid) {
         this.presidentid = presidentid;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeInt(teacherid);
+        dest.writeParcelable(student, flags);
+        dest.writeInt(presidentid);
     }
 }

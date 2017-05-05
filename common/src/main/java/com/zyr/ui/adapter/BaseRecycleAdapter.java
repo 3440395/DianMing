@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zyr.common.R;
+import com.zyr.util.ViewUtils;
+
 import java.util.List;
 
 /**
@@ -17,15 +20,14 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
     private List<T> data;
     private Context context;
     private OnItemClickListner onItemClickListner;//单击事件
-    private OnItemLongClickListner onItemLongClickListner;//长按单击事件
-    private boolean clickFlag = true;//单击事件和长单击事件的屏蔽标识
-
+    private int dp_5;
     /**
      * @param context  //上下文
      * @param layoutId //布局id
      * @param data     //数据源
      */
     public BaseRecycleAdapter(Context context, int layoutId, List<T> data) {
+        dp_5 = ViewUtils.dip2px(context, 5);
         this.layoutId = layoutId;
         this.data = data;
         this.context = context;
@@ -33,27 +35,18 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(layoutId, parent, false);
-        final BaseViewHolder holder = new BaseViewHolder(v, context);
+        View view = View.inflate(context, layoutId, null);
+        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(dp_5, dp_5, dp_5, 0);
+        view.setLayoutParams(layoutParams);
+        final BaseViewHolder holder = new BaseViewHolder(view, context);
         //单击事件回调
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (clickFlag) {
-                    onItemClickListner.onItemClickListner(v, holder.getLayoutPosition());
-                }
-                clickFlag = true;
+        view.setOnClickListener(v1 -> {
+            if (onItemClickListner!=null) {
+                onItemClickListner.onItemClickListner(v1, holder.getLayoutPosition());
             }
         });
-        //单击长按事件回调
-        v.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                onItemLongClickListner.onItemLongClickListner(v, holder.getLayoutPosition());
-                clickFlag = false;
-                return false;
-            }
-        });
+
         return holder;
     }
 
@@ -62,7 +55,7 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
         convert(holder, data.get(position));
     }
 
-    protected abstract <T> void convert(BaseViewHolder holder, T bean);
+    protected abstract void convert(BaseViewHolder holder, T bean);
 
     @Override
     public int getItemCount() {
@@ -73,17 +66,11 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
         this.onItemClickListner = onItemClickListner;
     }
 
-    public void setOnItemLongClickListner(OnItemLongClickListner onItemLongClickListner) {
-        this.onItemLongClickListner = onItemLongClickListner;
-    }
 
     public interface OnItemClickListner {
         void onItemClickListner(View v, int position);
     }
 
-    public interface OnItemLongClickListner {
-        void onItemLongClickListner(View v, int position);
-    }
 
     public void setData(List<T> data) {
         this.data = data;

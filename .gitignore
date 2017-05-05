@@ -5,3 +5,4 @@
 /captures
 .externalNativeBuild
 gen/
+/gradle/wrapper/gradle-wrapper.properties

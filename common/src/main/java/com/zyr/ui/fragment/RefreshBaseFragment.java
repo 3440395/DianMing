@@ -59,4 +59,9 @@ public class RefreshBaseFragment<T> extends BaseFragment implements SwipeRefresh
         this.adapter = adapter;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.requestData(swipeRefreshLayout);
+    }
 }

@@ -16,8 +16,8 @@ import com.zyr.util.ViewUtils;
  * Created by xuekai on 2017/5/5.
  */
 
-public abstract class HomeActivity extends BaseActivity {
-    private MToolbar toolbar;
+public abstract class HomeActivity extends BaseActivity implements MToolbar.OnTextViewClickListener{
+    protected MToolbar toolbar;
     private FragmentFactory fragmentFactory;
     private int role;
     public static final int ROLE_TEACHER = 0;
@@ -40,6 +40,7 @@ public abstract class HomeActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
+        toolbar.setOnTextViewClickListener(this);
     }
 
     @Override
@@ -98,12 +99,11 @@ public abstract class HomeActivity extends BaseActivity {
                     toolbar.setLeftTextView(null);
                     toolbar.setRightTextView(null);
                 }
-
-
                 break;
         }
         toolbar.setTitle(role == 1 ? Constant.tab_names_student[position - 1] : Constant.tab_names_teacher[position - 1]);
     }
 
     public abstract FragmentFactory createFragmentFactory();
+
 }

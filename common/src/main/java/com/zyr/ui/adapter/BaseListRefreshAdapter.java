@@ -9,7 +9,7 @@ import java.util.List;
  * Created by xuekai on 2017/5/5.
  */
 
-public abstract class BaseListRefreshAdapter<T> extends BaseRecycleAdapter<T>{
+public abstract class BaseListRefreshAdapter<T> extends BaseRecycleAdapter<T> {
 
     /**
      * @param context  //上下文
@@ -21,9 +21,7 @@ public abstract class BaseListRefreshAdapter<T> extends BaseRecycleAdapter<T>{
     }
 
     @Override
-    protected <T1> void convert(BaseViewHolder holder, T1 bean) {
-
-    }
+    protected abstract void convert(BaseViewHolder holder, T bean);
 
 
     public abstract void requestData(SwipeRefreshLayout swipeRefreshLayout);
