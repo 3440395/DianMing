@@ -1,12 +1,13 @@
 package com.zyr.student.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.zyr.base.BaseActivity;
-import com.zyr.bean.Student;
-import com.zyr.student.retrofit.Networks;
+import com.zyr.entity.Student;
+import com.zyr.student.net.retrofit.Networks;
+import com.zyr.student.net.ProgressSubscriber;
 import com.zyr.util.RxSchedulerHelper;
-import com.zyr.student.retrofit.subscirber.ProgressSubscriber;
 
 /**
  * Created by X.Sation on 2017/5/3.
@@ -41,10 +42,10 @@ public class StudentLoginActivity extends BaseActivity {
                 .getApiService()
                 .query("123")
                 .compose(RxSchedulerHelper.io_main())
-                .subscribe(new ProgressSubscriber<Student>(this) {
+                .subscribe(new ProgressSubscriber<Student>(this,false) {
                     @Override
                     public void onNext(Student student) {
-                        System.out.println(student);
+                        Log.e("StudentLoginActivity","onNext"+student);
                     }
                 });
     }

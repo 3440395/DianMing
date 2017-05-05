@@ -1,5 +1,6 @@
 package com.zyr.dianming.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.zyr.base.BaseActivity;
@@ -7,6 +8,7 @@ import com.zyr.common.Constant;
 import com.zyr.common.R;
 import com.zyr.dianming.ui.fragment.ChooseRoleFragment;
 import com.zyr.student.ui.activity.StudentLoginActivity;
+import com.zyr.teacher.CoreService;
 import com.zyr.teacher.ui.activity.TeacherLoginActivity;
 import com.zyr.util.SharedPreferencesUtil;
 
@@ -37,6 +39,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void fetchData() {
+        startService(new Intent(SplashActivity.this, CoreService.class));
         int role = SharedPreferencesUtil.getInt(mContext, Constant.SP_KEY_CURRENT_ROLE);
         switch (role) {
             case 0://跳转到老师登录页面

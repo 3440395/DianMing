@@ -1,11 +1,12 @@
-package com.zyr.util;
+package com.zyr.student.net.util;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-
-import com.zyr.util.UrlUtil;
+import android.util.Log;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,7 +16,7 @@ import java.net.URL;
  */
 
 public class NetUtil {
-    public static String getIPAddress(Context context){
+    public static String getIPAddress(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (!wifiManager.isWifiEnabled()) {
             return null;
@@ -26,7 +27,7 @@ public class NetUtil {
         return IPAddress;
     }
 
-    public static String getserverAddress(Context context){
+    public static String getserverAddress(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (!wifiManager.isWifiEnabled()) {
             return null;
@@ -42,27 +43,17 @@ public class NetUtil {
                 + (0xFF & paramInt >> 24);
     }
 
-    /**
-     * 检测是否有网络
-     * @return
-     */
-    public static boolean checkNet(){
-        return checkUrlAvailable(UrlUtil.getUrl("nettest")+"?p=1");
-    }
-    public static boolean checkUrlAvailable(String url){
-        try {
-            URL mUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)mUrl.openConnection();
-            int state = conn.getResponseCode();
-            if(state == 200){
-                return true;
-            }
-            else{
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    public static boolean isWifi(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo == null) {
             return false;
         }
+        int nType = networkInfo.getType();
+        if (nType == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
     }
 }

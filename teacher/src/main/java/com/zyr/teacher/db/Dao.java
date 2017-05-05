@@ -6,8 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.zyr.bean.Student;
-import com.zyr.bean.Teacher;
+import com.zyr.entity.Student;
+import com.zyr.entity.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;

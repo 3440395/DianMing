@@ -1,6 +1,10 @@
-package com.zyr.student.retrofit.subscirber;
+package com.zyr.subscirber;
 
 import android.content.Context;
+import android.widget.Toast;
+
+import com.zyr.subscirber.ProgressCancelListener;
+import com.zyr.subscirber.ProgressDialogHandler;
 
 import rx.Subscriber;
 
@@ -11,10 +15,11 @@ import rx.Subscriber;
 public abstract class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCancelListener {
 
     private ProgressDialogHandler mProgressDialogHandler;
+    protected Context context;
 
-
-    public ProgressSubscriber(Context context) {
-        mProgressDialogHandler = new ProgressDialogHandler(context,this, true);
+    public ProgressSubscriber(Context context, boolean canCancel) {
+        this.context = context;
+        mProgressDialogHandler = new ProgressDialogHandler(context, this, canCancel);
     }
 
     private void showProgressDialog() {
@@ -47,7 +52,7 @@ public abstract class ProgressSubscriber<T> extends Subscriber<T> implements Pro
     }
 
     @Override
-    public abstract void onNext(T t) ;
+    public abstract void onNext(T t);
 
     @Override
     public void onCancelProgress() {

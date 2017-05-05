@@ -1,10 +1,10 @@
-package com.zyr.student.retrofit.subscirber;
+package com.zyr.subscirber;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * Created by X.Sation on 2017/5/3.
@@ -31,16 +31,11 @@ public class ProgressDialogHandler extends Handler {
     private void initProgressDialog(){
         if (pd == null) {
             pd = new ProgressDialog(context);
-
+            pd.setTitle("加载中。。。");
             pd.setCancelable(cancelable);
 
             if (cancelable) {
-                pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        mProgressCancelListener.onCancelProgress();
-                    }
-                });
+                pd.setOnCancelListener(dialogInterface -> mProgressCancelListener.onCancelProgress());
             }
 
             if (!pd.isShowing()) {
