@@ -38,5 +38,11 @@ public abstract class BaseListFragment extends RefreshBaseFragment {
 //        });
     }
 
+    @Override
+    public void onRefresh() {
+        requestData();
+    }
+
+    public abstract void requestData();
 
 }

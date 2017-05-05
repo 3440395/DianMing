@@ -7,6 +7,8 @@ import android.widget.EditText;
 import com.zyr.base.BaseActivity;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
+import com.zyr.ui.view.MToolbar;
+import com.zyr.util.ViewUtils;
 
 /**
  * Created by xuekai on 2017/5/4.
@@ -33,23 +35,25 @@ public class TeacherRegisterActivity extends BaseActivity {
 
     @Override
     protected void setupViews(Bundle bundle) {
-        getSupportActionBar().setTitle("注册老师信息");
+        MToolbar toolbar = ViewUtils.findViewById(this, R.id.toolbar);
+        toolbar.setTitle("注册老师信息");
     }
+
 
     @Override
     protected void setListener() {
         register.setOnClickListener(v -> {
             boolean result;
-            String msg="您已注册";
+            String msg = "您已注册";
             if (!name.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
                 result = dao.registerTeacher(name.getText().toString(), password.getText().toString());
             } else {
                 result = false;
-                msg="请填入有效的用户名和密码";
+                msg = "请填入有效的用户名和密码";
             }
             if (result) {
                 finish();
-            }else{
+            } else {
                 toast(msg);
             }
         });

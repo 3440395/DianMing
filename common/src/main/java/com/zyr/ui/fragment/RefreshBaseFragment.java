@@ -37,12 +37,8 @@ public abstract class RefreshBaseFragment extends BaseFragment implements SwipeR
     }
 
 
-    @Override
-    public void onRefresh() {
-        requestData();
-    }
 
-    public abstract void requestData();
+
 
     @Override
     protected void fetchData(View v) {

@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <com.zyr.ui.view.MToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"></com.zyr.ui.view.MToolbar>
     <Button
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

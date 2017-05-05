@@ -15,7 +15,9 @@ import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
 import com.zyr.teacher.ui.TeacherListAdapter;
 import com.zyr.ui.activity.HomeActivity;
+import com.zyr.ui.view.MToolbar;
 import com.zyr.util.RxSchedulerHelper;
+import com.zyr.util.ViewUtils;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class TeacherLoginActivity extends BaseActivity {
     private RecyclerView teacherList;
     private Dao dao;
     private TeacherListAdapter teacherListAdapter;
+    private MToolbar toolbar;
 
     @Override
     protected void setLayout() {
@@ -41,11 +44,14 @@ public class TeacherLoginActivity extends BaseActivity {
     protected void findViews() {
         addTeacher = (Button) findViewById(R.id.btn_add);
         teacherList = (RecyclerView) findViewById(R.id.rv_teacher_list);
+        toolbar = ViewUtils.findViewById(this, R.id.toolbar);
 
     }
 
     @Override
     protected void setupViews(Bundle bundle) {
+        toolbar.setTitle("登录");
+
         teacherList.setLayoutManager(new LinearLayoutManager(mContext));
         teacherListAdapter = new TeacherListAdapter(mContext);
         teacherList.setAdapter(teacherListAdapter);
