@@ -1,12 +1,9 @@
 package com.zyr.teacher.ui.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +14,12 @@ import com.zyr.subscirber.ProgressSubscriber;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
 import com.zyr.teacher.ui.TeacherListAdapter;
+import com.zyr.ui.activity.HomeActivity;
 import com.zyr.util.RxSchedulerHelper;
 
 import java.util.List;
 
 import rx.Observable;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * Created by X.Sation on 2017/5/3.
@@ -95,6 +91,7 @@ public class TeacherLoginActivity extends BaseActivity {
                         if (result) {
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("teacher",teacher);
+                            bundle.putInt("role", HomeActivity.ROLE_TEACHER);
                             toActivity(TeacherHomeActivity.class,bundle);
                         }else{
                             toast("密码错误");

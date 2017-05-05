@@ -6,8 +6,7 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="toolbar_button_padding">16dp</dimen>
 
-    <dimen name="tab_height_virtual">50dp</dimen>
-    <dimen name="tab_height_real">65dp</dimen>
+    <dimen name="tab_height">65dp</dimen>
 
     <dimen name="text_size_s">12sp</dimen>
     <dimen name="text_size_m">14sp</dimen>

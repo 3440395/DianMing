@@ -19,7 +19,7 @@ import com.zyr.util.SharedPreferencesUtil;
 public class SplashActivity extends BaseActivity {
     @Override
     protected void setLayout() {
-        setContentView(R.layout.layout_splash);
+        setContentView(R.layout.activity_splash);
     }
 
     @Override
