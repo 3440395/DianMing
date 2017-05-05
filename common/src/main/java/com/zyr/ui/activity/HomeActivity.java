@@ -66,23 +66,22 @@ public abstract class HomeActivity extends BaseActivity implements View.OnClickL
         if (fragmentFactory == null) {
             fragmentFactory = new FragmentFactory();
         }
-//        if (!fragmentFactory.getFragment(tabPosition).isAdded()) {
-//            fm.beginTransaction().add(R.id.home_content, fragmentFactory.getFragment(tabPosition), fragmentFactory.getFragment(tabPosition).getTag()).commit();
-//        }
-//        for (int i = 1; i < 5; i++) {
-//            if (i == tabPosition) {
-////                Log.e("HomeActivity","显示"+i);
-//                fm.beginTransaction().show(fragmentFactory.getFragment(i)).commit();
-//            } else {
-////                Log.e("HomeActivity","隐藏"+i);
-//
-//                fm.beginTransaction().hide(fragmentFactory.getFragment(i)).commit();
-//            }
-//        }
+        if (!fragmentFactory.getFragment(tabPosition,role).isAdded()) {
+            fm.beginTransaction().add(R.id.home_content, fragmentFactory.getFragment(tabPosition,role), fragmentFactory.getFragment(tabPosition,role).getTag()).commit();
+        }
+        for (int i = 1; i < 5; i++) {
+            if (i == tabPosition) {
+                fm.beginTransaction().show(fragmentFactory.getFragment(i,role)).commit();
+            } else {
+//                Log.e("HomeActivity","隐藏"+i);
+
+                fm.beginTransaction().hide(fragmentFactory.getFragment(i,role)).commit();
+            }
+        }
     }
 
     public void setToolbar(int position) {
-        if (position == 4) {
+        if (position == 3) {
             toolbar.setVisibility(View.GONE);
             return;
         } else {
@@ -90,8 +89,8 @@ public abstract class HomeActivity extends BaseActivity implements View.OnClickL
         }
         switch (position) {
             case 1:
-                toolbar.setLeftTextView("关注路线");
-                toolbar.setRightTextView(null);
+                toolbar.setLeftTextView(null);
+                toolbar.setRightTextView("筛选");
                 break;
             case 2:
                 toolbar.setLeftTextView("关注路线");

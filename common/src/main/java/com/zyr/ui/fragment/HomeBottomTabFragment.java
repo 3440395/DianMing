@@ -46,7 +46,6 @@ public class HomeBottomTabFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void setupViews(View v) {
-
     }
 
     @Override
