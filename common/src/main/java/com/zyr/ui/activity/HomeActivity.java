@@ -16,7 +16,7 @@ import com.zyr.util.ViewUtils;
  * Created by xuekai on 2017/5/5.
  */
 
-public abstract class HomeActivity extends BaseActivity implements View.OnClickListener {
+public abstract class HomeActivity extends BaseActivity {
     private MToolbar toolbar;
     private FragmentFactory fragmentFactory;
     private int role;
@@ -44,16 +44,11 @@ public abstract class HomeActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void fetchData() {
+        fragmentFactory = createFragmentFactory();
         ((HomeBottomTabFragment) getSupportFragmentManager().findFragmentByTag("HomeBottomTabFragment")).setRole(role);
         ((HomeBottomTabFragment) getSupportFragmentManager().findFragmentByTag("HomeBottomTabFragment")).selectBottomTab(1);
-    }
-
-
-    @Override
-    public void onClick(View v) {
 
     }
-
 
     /**
      * 根据参数设置内容fragment
@@ -64,18 +59,16 @@ public abstract class HomeActivity extends BaseActivity implements View.OnClickL
     public void selectContentFragment(int tabPosition) {
         FragmentManager fm = getSupportFragmentManager();
         if (fragmentFactory == null) {
-            fragmentFactory = new FragmentFactory();
+            throw new NullPointerException("fragmentFactory没有被初始化");
         }
-        if (!fragmentFactory.getFragment(tabPosition,role).isAdded()) {
-            fm.beginTransaction().add(R.id.home_content, fragmentFactory.getFragment(tabPosition,role), fragmentFactory.getFragment(tabPosition,role).getTag()).commit();
+        if (!fragmentFactory.getFragment(tabPosition).isAdded()) {
+            fm.beginTransaction().add(R.id.home_content, fragmentFactory.getFragment(tabPosition), fragmentFactory.getFragment(tabPosition).getTag()).commit();
         }
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < fragmentFactory.getSize() + 1; i++) {
             if (i == tabPosition) {
-                fm.beginTransaction().show(fragmentFactory.getFragment(i,role)).commit();
+                fm.beginTransaction().show(fragmentFactory.getFragment(i)).commit();
             } else {
-//                Log.e("HomeActivity","隐藏"+i);
-
-                fm.beginTransaction().hide(fragmentFactory.getFragment(i,role)).commit();
+                fm.beginTransaction().hide(fragmentFactory.getFragment(i)).commit();
             }
         }
     }
@@ -89,19 +82,28 @@ public abstract class HomeActivity extends BaseActivity implements View.OnClickL
         }
         switch (position) {
             case 1:
-                toolbar.setLeftTextView(null);
-                toolbar.setRightTextView("筛选");
+                if (role == ROLE_TEACHER) {
+                    toolbar.setLeftTextView(null);
+                    toolbar.setRightTextView("筛选");
+                } else {
+                    toolbar.setLeftTextView(null);
+                    toolbar.setRightTextView(null);
+                }
                 break;
             case 2:
-                toolbar.setLeftTextView("关注路线");
-                toolbar.setRightTextView(null);
+                if (role == ROLE_TEACHER) {
+                    toolbar.setLeftTextView(null);
+                    toolbar.setRightTextView("添加科目");
+                } else {
+                    toolbar.setLeftTextView(null);
+                    toolbar.setRightTextView(null);
+                }
+
 
                 break;
-            case 3:
-                toolbar.setRightTextView("更多");
-                toolbar.setLeftTextView(null);
-                break;
         }
-        toolbar.setTitle(role==1?Constant.tab_names_student[position - 1]:Constant.tab_names_teacher[position - 1]);
+        toolbar.setTitle(role == 1 ? Constant.tab_names_student[position - 1] : Constant.tab_names_teacher[position - 1]);
     }
+
+    public abstract FragmentFactory createFragmentFactory();
 }

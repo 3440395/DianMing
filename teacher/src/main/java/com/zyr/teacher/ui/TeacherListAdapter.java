@@ -2,10 +2,8 @@ package com.zyr.teacher.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +12,6 @@ import com.zyr.teacher.R;
 import com.zyr.util.ViewUtils;
 
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by X.Sation on 2017/5/4.

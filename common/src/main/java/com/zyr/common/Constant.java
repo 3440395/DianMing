@@ -8,8 +8,8 @@ import java.text.SimpleDateFormat;
  */
 public class Constant {
 
-    public static String[] tab_names_teacher = {"学生管理", "课程管理", "个人信息"};
-    public static String[] tab_names_student = {"我的老师", "我的课程", "个人信息"};
+    public static String[] tab_names_teacher = {"学生管理", "课程管理", "我的"};
+    public static String[] tab_names_student = {"我的老师", "我的课程", "我的"};
 
     public static final SimpleDateFormat shortDayFormat = new SimpleDateFormat("MM-dd");
     public static final SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");

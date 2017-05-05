@@ -2,50 +2,33 @@ package com.zyr.ui.fragment;
 
 import android.support.v4.app.Fragment;
 
-import com.zyr.ui.activity.HomeActivity;
-
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by xk on 2016/6/2 21:00.
  */
-public class FragmentFactory {
+public abstract class FragmentFactory {
+
     public FragmentFactory() {
         fragments = new HashMap<Integer, Fragment>();
     }
 
+    public int getSize() {
+        return fragments.size();
+    }
+
     private Map<Integer, Fragment> fragments;
 
-    public Fragment getFragment(int position,int role) {
-        if (fragments.get(position) == null) {
-            boolean isTeacher=(role== HomeActivity.ROLE_TEACHER);
-
-            Fragment fragment;
-            switch (position) {
-                case 1:
-                    if (isTeacher) {
-
-                    }
-//                    fragment = new FindTruckFragment();
-//                    fragments.put(1, fragment);
-                    break;
-                case 2:
-                    if (isTeacher) {
-
-                    }
-//                    fragment = new FindCargoFragment();
-//                    fragments.put(2, fragment);
-                    break;
-                case 3:
-                    if (isTeacher) {
-
-                    }
-//                    fragment = new MessageFragment();
-//                    fragments.put(3, fragment);
-                    break;
-            }
-        }
+    public Fragment getFragment(int position) {
+        fragments.putIfAbsent(position, createFragment(position));
         return fragments.get(position);
     }
+
+    /**
+     * 创建指定position对应的fragment
+     *
+     * @param position
+     */
+    public abstract Fragment createFragment(int position);
 }
