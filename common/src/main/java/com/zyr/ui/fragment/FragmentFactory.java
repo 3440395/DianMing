@@ -21,7 +21,9 @@ public abstract class FragmentFactory {
     private Map<Integer, Fragment> fragments;
 
     public Fragment getFragment(int position) {
-        fragments.putIfAbsent(position, createFragment(position));
+        if (fragments.get(position) == null) {
+            fragments.put(position, createFragment(position));
+        }
         return fragments.get(position);
     }
 

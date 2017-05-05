@@ -7,16 +7,22 @@ import android.view.View;
 
 import com.zyr.base.BaseFragment;
 import com.zyr.common.R;
+import com.zyr.ui.adapter.BaseListRefreshAdapter;
 import com.zyr.util.ViewUtils;
 
 
 /**
  * Created by xk on 2016/6/4 9:25.
  */
-public abstract class RefreshBaseFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class RefreshBaseFragment<T> extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected RecyclerView rv_list;
+    private BaseListRefreshAdapter<T> adapter;
 
+    @Override
+    protected void setLayoutRes() {
+        layoutRes = R.layout.fragment_list_refresh;
+    }
 
     @Override
     protected void findViews(View v) {
@@ -29,6 +35,10 @@ public abstract class RefreshBaseFragment extends BaseFragment implements SwipeR
         swipeRefreshLayout.setColorSchemeColors(0xff3F51B5);
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(0xffffffff);
         rv_list.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (adapter == null) {
+            throw new NullPointerException("请调用设置adapter");
+        }
+        rv_list.setAdapter(adapter);
     }
 
     @Override
@@ -36,11 +46,17 @@ public abstract class RefreshBaseFragment extends BaseFragment implements SwipeR
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-
-
-
-
     @Override
     protected void fetchData(View v) {
     }
+
+    @Override
+    public void onRefresh() {
+        adapter.requestData(swipeRefreshLayout);
+    }
+
+    public void setAdapter(BaseListRefreshAdapter<T> adapter) {
+        this.adapter = adapter;
+    }
+
 }
