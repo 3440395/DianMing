@@ -32,7 +32,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 "_id integer primary key autoincrement," +
                 "name text ," +
                 "teacherid integer," +//这门课的代课老师是谁
-                "presidentid integer," +
+                "presidentid text," +
                 "unique  (name,teacherid))");//设置名字和老师id唯一约束
 
         db.execSQL("create table tb_course_time(" +

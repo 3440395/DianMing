@@ -2,12 +2,13 @@ package com.zyr.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
  * Created by xuekai on 2017/5/3.
  */
 
-public class Student implements Parcelable {
+public class Student implements Parcelable,Comparable<Student>{
     private String name;
     private String sex;
     private String studentid;
@@ -94,4 +95,13 @@ public class Student implements Parcelable {
             return new Student[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull Student o) {
+        if(studentid.equals(o.studentid)){
+            return 0;
+        }else{
+            return o.studentid.compareTo(o.studentid);
+        }
+    }
 }

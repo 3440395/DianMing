@@ -23,6 +23,7 @@ import com.zyr.ui.fragment.FragmentFactory;
 import com.zyr.ui.fragment.RefreshBaseFragment;
 import com.zyr.util.RxSchedulerHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -97,7 +98,7 @@ public class TeacherHomeActivity extends HomeActivity {
             @Override
             protected void convert(BaseViewHolder holder, Student bean) {
                 holder.setText(R.id.tv_name, "姓名：" + bean.getName());
-                holder.setText(R.id.tv_studentid, "学号：" + bean.getPassword());
+                holder.setText(R.id.tv_studentid, "学号：" + bean.getStudentid());
                 String sex = bean.getSex();
                 int imgRes;
                 if (sex != null) {
@@ -113,7 +114,7 @@ public class TeacherHomeActivity extends HomeActivity {
                 Observable
                         .create((Observable.OnSubscribe<List<Student>>) subscriber -> {
                             //从数据库中查询学生数据
-                            List<Student> students = null;
+                            List<Student> students = new ArrayList<>();
                             List<Course> courses = dao.queryCourseByTeacher(teacher.getId());
                             for (Course course : courses) {
                                 List<Student> students1 = dao.queryStudentsByCourseId(course.getId());
@@ -121,7 +122,9 @@ public class TeacherHomeActivity extends HomeActivity {
                                     students.addAll(students1);
                                 }
                             }
-                            subscriber.onNext(students);
+
+                            List<Student> newStudents = removeDuplicate(students);
+                            subscriber.onNext(newStudents);
                             subscriber.onCompleted();
                         })
                         .compose(RxSchedulerHelper.io_main())
@@ -196,8 +199,10 @@ public class TeacherHomeActivity extends HomeActivity {
                             List<Course> courses = dao.queryCourseByTeacher(teacher.getId());
                             //从数据库中查出班长详细信息，然后放到course中
                             for (Course course : courses) {
-                                Student student = dao.queryStudentByStudentId(course.getPresidentid());
-                                course.setPresident(student);
+                                if (course.getPresidentid() != null) {
+                                    Student student = dao.queryStudentByStudentId(course.getPresidentid());
+                                    course.setPresident(student);
+                                }
                             }
 
                             //从数据库中查出该课程的上课时间，然后放到course中
@@ -360,5 +365,14 @@ public class TeacherHomeActivity extends HomeActivity {
         edit.requestFocus();
     }
 
-
+    public List<Student> removeDuplicate(List<Student> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = list.size() - 1; j > i; j--) {
+                if (list.get(j).getStudentid().equals(list.get(i).getStudentid())) {
+                    list.remove(j);
+                }
+            }
+        }
+        return list;
+    }
 }

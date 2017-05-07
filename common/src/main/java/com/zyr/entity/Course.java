@@ -14,7 +14,7 @@ public class Course implements Parcelable {
     private String name;
     private int teacherid;
     private Student president;
-    private int presidentid=-1;
+    private String presidentid="";
     private int[] times={};
     private Teacher teacher;
 
@@ -67,11 +67,11 @@ public class Course implements Parcelable {
         this.president = president;
     }
 
-    public int getPresidentid() {
+    public String getPresidentid() {
         return presidentid;
     }
 
-    public void setPresidentid(int presidentid) {
+    public void setPresidentid(String presidentid) {
         this.presidentid = presidentid;
     }
 
@@ -100,7 +100,7 @@ public class Course implements Parcelable {
         name = in.readString();
         teacherid = in.readInt();
         president = in.readParcelable(Student.class.getClassLoader());
-        presidentid = in.readInt();
+        presidentid = in.readString();
         times = in.createIntArray();
         teacher = in.readParcelable(Teacher.class.getClassLoader());
     }
@@ -111,7 +111,7 @@ public class Course implements Parcelable {
         dest.writeString(name);
         dest.writeInt(teacherid);
         dest.writeParcelable(president, flags);
-        dest.writeInt(presidentid);
+        dest.writeString(presidentid);
         dest.writeIntArray(times);
         dest.writeParcelable(teacher, flags);
     }

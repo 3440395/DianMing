@@ -264,7 +264,7 @@ public class Dao {
      * @param courseid
      * @return
      */
-    public boolean chooseCourseByStudent(int studentid, int courseid) {
+    public boolean chooseCourseByStudent(String studentid, int courseid) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -283,7 +283,7 @@ public class Dao {
      * @param coursetimeid 课程id（老师和课程名组成）
      * @return
      */
-    public boolean checkIn(int studentid, String time, int coursetimeid) {
+    public boolean checkIn(String studentid, String time, int coursetimeid) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -302,7 +302,7 @@ public class Dao {
      * @param coursetimeid 课程id（老师和课程名组成）
      * @return
      */
-    public boolean leave(int studentid, String time, int coursetimeid) {
+    public boolean leave(String studentid, String time, int coursetimeid) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -329,7 +329,7 @@ public class Dao {
         }
         Cursor cursor = readableDatabase.query("tb_course_student", new String[]{"studentId"}, "courseid=?", selectionArgs, null, null, null);
         while (cursor.moveToNext()) {
-            int studentId = getIntFromCursor(cursor, "studentid");
+            String studentId = getStringFromCursor(cursor, "studentid");
             student = queryStudentByStudentId(studentId);
             students.add(student);
         }
@@ -343,15 +343,18 @@ public class Dao {
      * @param studentId
      * @return
      */
-    public Student queryStudentByStudentId(int studentId) {
+    public Student queryStudentByStudentId(String studentId) {
+        if (studentId==null) {
+            return null;
+        }
         Student student = null;
         readableDatabase = dbHelper.getReadableDatabase();
-        Cursor cursor = readableDatabase.query("tb_student", new String[]{"name", "sex"}, "studentId=?", new String[]{String.valueOf(studentId)}, null, null, null);
+        Cursor cursor = readableDatabase.query("tb_student", new String[]{"name", "sex"}, "studentId=?", new String[]{studentId}, null, null, null);
         if (cursor.moveToNext()) {
             student = new Student();
             student.setName(getStringFromCursor(cursor, "name"));
             student.setSex(getStringFromCursor(cursor, "sex"));
-            student.setStudentid(getStringFromCursor(cursor, "studentId"));
+            student.setStudentid(studentId);
         }
         cursor.close();
         return student;
@@ -400,7 +403,7 @@ public class Dao {
             course = new Course();
             int id = getIntFromCursor(cursor, "_id");
             String name = getStringFromCursor(cursor, "name");
-            int presidentid = getIntFromCursor(cursor, "presidentid");
+            String presidentid = getStringFromCursor(cursor, "presidentid");
             course.setId(id);
             course.setName(name);
             course.setPresidentid(presidentid);
@@ -485,13 +488,15 @@ public class Dao {
             course = new Course();
             int id = getIntFromCursor(cursor, "_id");
             String name = getStringFromCursor(cursor, "name");
-            int presidentid = getIntFromCursor(cursor, "presidentid");
+            String presidentid = getStringFromCursor(cursor, "presidentid");
+            Student president = queryStudentByStudentId(presidentid);
             int teacherid = getIntFromCursor(cursor, "teacherid");
             List<Teacher> teachers = queryTeacher(teacherid);
             course.setId(id);
             course.setName(name);
             course.setPresidentid(presidentid);
             course.setTeacherid(teacherid);
+            course.setPresident(president);
             course.setTeacher(teachers.get(0));
             courses.add(course);
         }

@@ -52,10 +52,52 @@ public class Helper {
                 String studentid3 = parse.get("studentid");
                 responseJson = queryUncheckedCourse(studentid3);
                 break;
-            case "5":
+            case "chooseCourseByStudent":
+                String studentid4 = parse.get("studentid");
+                String courseids4 = parse.get("courseids");
+                responseJson = chooseCourseByStudent(studentid4, courseids4);
+                break;
+            case "queryCourseByStudentId":
+                String studentid5 = parse.get("studentid");
+                responseJson = queryCourseByStudentId(studentid5);
                 break;
         }
         return responseJson;
+    }
+
+    /**
+     * 通过学号，查询所有课程
+     * @param studentid5
+     * @return
+     */
+    private String queryCourseByStudentId(String studentid5) {
+        BaseEntity<List<Course>> entity = new BaseEntity();
+        List<Course> courses = null;
+        courses=dao.queryCheckedCourseByStudet(studentid5);
+        entity.setResultCode(1);
+        entity.setData(courses);
+        return gson.toJson(entity);    }
+
+    /**
+     * 学生选课
+     *
+     * @param studentid4
+     * @param courseids4
+     * @return
+     */
+    private String chooseCourseByStudent(String studentid4, String courseids4) {
+        BaseEntity entity = new BaseEntity();
+
+        boolean result = true;
+        String[] split = courseids4.split(",");
+        for (String s : split) {
+            boolean b = dao.chooseCourseByStudent(studentid4, Integer.valueOf(s));
+            if (!b) {
+                result = b;
+            }
+        }
+        entity.setResultCode(result ? 1 : 0);
+        return gson.toJson(entity);
     }
 
     /**
