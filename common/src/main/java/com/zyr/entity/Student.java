@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
  * Created by xuekai on 2017/5/3.
  */
 
-public class Student implements Parcelable,Comparable<Student>{
+public class Student implements Parcelable{
     private String name;
     private String sex;
     private String studentid;
@@ -96,12 +96,5 @@ public class Student implements Parcelable,Comparable<Student>{
         }
     };
 
-    @Override
-    public int compareTo(@NonNull Student o) {
-        if(studentid.equals(o.studentid)){
-            return 0;
-        }else{
-            return o.studentid.compareTo(o.studentid);
-        }
-    }
+
 }

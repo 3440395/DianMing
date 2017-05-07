@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import com.zyr.common.Constant;
 import com.zyr.entity.BaseEntity;
@@ -14,8 +15,10 @@ import com.zyr.student.R;
 import com.zyr.student.net.ProgressSubscriber;
 import com.zyr.student.net.retrofit.Networks;
 import com.zyr.student.ui.fragment.StudentMeFragment;
+import com.zyr.ui.activity.CourseDateActivity;
 import com.zyr.ui.activity.HomeActivity;
 import com.zyr.ui.adapter.BaseListRefreshAdapter;
+import com.zyr.ui.adapter.BaseRecycleAdapter;
 import com.zyr.ui.adapter.BaseViewHolder;
 import com.zyr.ui.fragment.FragmentFactory;
 import com.zyr.ui.fragment.RefreshBaseFragment;
@@ -31,7 +34,11 @@ import java.util.List;
  */
 
 public class StudentHomeActivity extends HomeActivity {
-
+    final String items[] = {"周一 1-2节", "周一 3-4节", "周一 5-6节", "周一 7-8节",
+            "周二 1-2节", "周二 3-4节", "周二 5-6节", "周二 7-8节",
+            "周三 1-2节", "周三 3-4节", "周三 5-6节", "周三 7-8节",
+            "周四 1-2节", "周四 3-4节", "周四 5-6节", "周四 7-8节",
+            "周五 1-2节", "周五 3-4节", "周五 5-6节", "周五 7-8节"};
     /**
      * 筛选id 按钮点击之后，改变这里，刷新学生数据的课程依据从这里拿
      */
@@ -216,9 +223,35 @@ public class StudentHomeActivity extends HomeActivity {
                         });
             }
         };
+        baseListRefreshAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner<Course>() {
+            @Override
+            public void onItemClickListner(View v, Course o) {
+                showChooseCourseTimeDialog(o);
+            }
+        });
         myCourseFragment = new RefreshBaseFragment<Course>();
         myCourseFragment.setAdapter(baseListRefreshAdapter);
         return myCourseFragment;
+    }
+
+    private void showChooseCourseTimeDialog(Course o) {
+
+        final String items[] = new String[o.getTimes().length];
+        for (int i = 0; i < o.getTimes().length; i++) {
+            items[i] = this.items[o.getTimes()[i]];
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(StudentHomeActivity.this);
+        builder.setTitle("请选择具体的课");
+        builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+        builder.setItems(items, (dialog, which) -> {
+            dialog.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("course",o);
+            bundle.putParcelable("student",student);
+            bundle.putInt("courseTime",which+1);
+            toActivity(CourseDateActivity.class, bundle);
+        });
+        builder.create().show();
     }
 
     /**
@@ -330,19 +363,6 @@ public class StudentHomeActivity extends HomeActivity {
         builder.create().show();
     }
 
-    //    private void showCreateCourseDialog(Teacher teacher) {
-//        View view = View.inflate(mContext, R.layout.dialog_create_course, null);
-//        EditText edit = (EditText) view.findViewById(R.id.et_course_name);
-//        new AlertDialog.Builder(StudentHomeActivity.this)
-//                .setTitle(teacher.getName() + "老师,请输入课程名")//提示框标题
-//                .setView(view)
-//                .setPositiveButton("确定",//提示框的两个按钮
-//                        (dialog, which) -> {
-//                            createCourse(edit.getText().toString());
-//                        })
-//                .setNegativeButton("取消", null).create().show();
-//        edit.requestFocus();
-//    }
     public List<Teacher> removeDuplicate(List<Teacher> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = list.size() - 1; j > i; j--) {

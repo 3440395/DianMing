@@ -1,5 +1,6 @@
 package com.zyr.teacher.ui.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,7 @@ import com.zyr.subscirber.ProgressSubscriber;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
 import com.zyr.teacher.ui.fragment.TeacherMeFragment;
+import com.zyr.ui.activity.CourseDateActivity;
 import com.zyr.ui.activity.HomeActivity;
 import com.zyr.ui.adapter.BaseListRefreshAdapter;
 import com.zyr.ui.adapter.BaseRecycleAdapter;
@@ -147,18 +149,18 @@ public class TeacherHomeActivity extends HomeActivity {
         studentManagerFragment.setAdapter(baseListRefreshAdapter);
         return studentManagerFragment;
     }
-
+    final String items[] = {"周一 1-2节", "周一 3-4节", "周一 5-6节", "周一 7-8节",
+            "周二 1-2节", "周二 3-4节", "周二 5-6节", "周二 7-8节",
+            "周三 1-2节", "周三 3-4节", "周三 5-6节", "周三 7-8节",
+            "周四 1-2节", "周四 3-4节", "周四 5-6节", "周四 7-8节",
+            "周五 1-2节", "周五 3-4节", "周五 5-6节", "周五 7-8节"};
     /**
      * 创建课程管理的fragment
      *
      * @return
      */
     private Fragment createCourseManagerFragment() {
-        final String items[] = {"周一 1-2节", "周一 3-4节", "周一 5-6节", "周一 7-8节",
-                "周二 1-2节", "周二 3-4节", "周二 5-6节", "周二 7-8节",
-                "周三 1-2节", "周三 3-4节", "周三 5-6节", "周三 7-8节",
-                "周四 1-2节", "周四 3-4节", "周四 5-6节", "周四 7-8节",
-                "周五 1-2节", "周五 3-4节", "周五 5-6节", "周五 7-8节"};
+
         BaseListRefreshAdapter<Course> baseListRefreshAdapter = new BaseListRefreshAdapter<Course>(TeacherHomeActivity.this, R.layout.item_course, null) {
             @Override
             public String setEmptyMstContent() {
@@ -247,8 +249,7 @@ public class TeacherHomeActivity extends HomeActivity {
                 builder.setItems(items, (dialog, which) -> {
                     dialog.dismiss();
                     if (which == 0) {
-//                        toActivity(CourseDetailActivity.class);
-                        Toast.makeText(TeacherHomeActivity.this, "跳转到详情页", Toast.LENGTH_SHORT).show();
+                        showChooseCourseTimeDialog(o);
                     } else {
                         showSetCourseTimeDialog(o.getId());
                     }
@@ -287,7 +288,24 @@ public class TeacherHomeActivity extends HomeActivity {
         courseManagerFragment.setAdapter(baseListRefreshAdapter);
         return courseManagerFragment;
     }
+    private void showChooseCourseTimeDialog(Course o) {
 
+        final String items[] = new String[o.getTimes().length];
+        for (int i = 0; i < o.getTimes().length; i++) {
+            items[i]=this.items[o.getTimes()[i]];
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(TeacherHomeActivity.this);
+        builder.setTitle("请选择具体的课");
+        builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+        builder.setItems(items, (dialog, which) -> {
+            dialog.dismiss();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("course",o);
+            bundle.putInt("courseTime",which+1);
+            toActivity(CourseDateActivity.class, bundle);
+        });
+        builder.create().show();
+    }
     /**
      * 保存上课时间信息
      *

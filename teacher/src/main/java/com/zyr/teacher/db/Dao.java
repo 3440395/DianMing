@@ -493,6 +493,16 @@ public class Dao {
             int teacherid = getIntFromCursor(cursor, "teacherid");
             List<Teacher> teachers = queryTeacher(teacherid);
             course.setId(id);
+            String s = queryCourseTime(id);
+            int[] ints;
+            if (s.length() > 0) {
+                String[] split = s.split(",");
+                ints = new int[split.length];
+                for (int i = 0; i < split.length; i++) {
+                    ints[i] = Integer.valueOf(split[i]);
+                }
+                course.setTimes(ints);
+            }
             course.setName(name);
             course.setPresidentid(presidentid);
             course.setTeacherid(teacherid);

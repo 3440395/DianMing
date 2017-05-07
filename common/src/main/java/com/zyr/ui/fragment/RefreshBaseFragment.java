@@ -16,9 +16,14 @@ import com.zyr.util.ViewUtils;
  * Created by xk on 2016/6/4 9:25.
  */
 public class RefreshBaseFragment<T> extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    protected SwipeRefreshLayout swipeRefreshLayout;
+    public SwipeRefreshLayout swipeRefreshLayout;
     protected RecyclerView rv_list;
     private BaseListRefreshAdapter<T> adapter;
+    private boolean canSwipeRefresh=true;
+
+    public void setCanSwipeRefresh(boolean canSwipeRefresh) {
+        this.canSwipeRefresh = canSwipeRefresh;
+    }
 
     @Override
     protected void setLayoutRes() {
@@ -41,6 +46,7 @@ public class RefreshBaseFragment<T> extends BaseFragment implements SwipeRefresh
         }
         adapter.setRootView((ViewGroup) rootView);
         rv_list.setAdapter(adapter);
+        swipeRefreshLayout.setEnabled(canSwipeRefresh);
     }
 
     @Override
