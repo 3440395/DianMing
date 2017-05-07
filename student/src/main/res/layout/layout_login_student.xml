@@ -3,20 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <com.zyr.ui.view.MToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"></com.zyr.ui.view.MToolbar>
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="还没有我的信息，添加"
-        android:id="@+id/btn_add"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="登录" />
 
-    <android.support.v7.widget.RecyclerView
+    <Button
+        android:id="@+id/btn_register"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rv_teacher_list"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="注册" />
+
+
 </LinearLayout>

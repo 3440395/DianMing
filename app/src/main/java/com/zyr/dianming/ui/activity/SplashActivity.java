@@ -39,6 +39,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void fetchData() {
+        // TODO: by xk 2017/5/6 19:40 服务应该在teacher端开启
         startService(new Intent(SplashActivity.this, CoreService.class));
         int role = SharedPreferencesUtil.getInt(mContext, Constant.SP_KEY_CURRENT_ROLE);
         switch (role) {

@@ -4,6 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.zyr.base.BaseFragment;
 import com.zyr.common.R;
@@ -38,6 +39,7 @@ public class RefreshBaseFragment<T> extends BaseFragment implements SwipeRefresh
         if (adapter == null) {
             throw new NullPointerException("请调用设置adapter");
         }
+        adapter.setRootView((ViewGroup) rootView);
         rv_list.setAdapter(adapter);
     }
 

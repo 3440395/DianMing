@@ -2,7 +2,6 @@ package com.zyr.student.net.util;
 
 import android.content.Context;
 
-import com.zyr.common.App;
 import com.zyr.student.net.retrofit.Networks;
 
 /**
@@ -17,14 +16,14 @@ public class UrlUtil {
     private Context context;
 
     private UrlUtil() {
-        init(App.getInstance().getApplicationContext());
+
     }
 
     public static UrlUtil getInstance() {
         return instance;
     }
 
-    private void init(Context context) {
+    public void init(Context context) {
         this.context = context;
         updateIp();
     }
@@ -32,7 +31,7 @@ public class UrlUtil {
     public String getUrl() {
         StringBuffer sb = new StringBuffer();
         if (serverAddress==null||serverAddress.isEmpty()) {
-            serverAddress="1.1.1.1";
+            serverAddress="localhost";
         }
         sb.append("http://").append(serverAddress).append(":8080/");
         return sb.toString();
@@ -42,8 +41,10 @@ public class UrlUtil {
      * wifi 状态改变时更新ip，并且要重新初始化retrofit
      */
     public void updateIp() {
-        serverAddress = NetUtil.getIPAddress(context);
-        Networks.getInstance().initRetrofit(getUrl());
+        if (serverAddress != NetUtil.getIPAddress(context)) {
+            serverAddress=NetUtil.getIPAddress(context);
+            Networks.getInstance().initRetrofit(getUrl());
+        }
     }
 
 }

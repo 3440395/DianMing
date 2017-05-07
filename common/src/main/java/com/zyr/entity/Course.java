@@ -3,6 +3,8 @@ package com.zyr.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Arrays;
+
 /**
  * Created by xuekai on 2017/5/3.
  */
@@ -11,41 +13,10 @@ public class Course implements Parcelable {
     private int id;
     private String name;
     private int teacherid;
-    private Student student;
-    private int presidentid;
-
-    public Course() {
-
-    }
-
-
-    protected Course(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        teacherid = in.readInt();
-        student = in.readParcelable(Student.class.getClassLoader());
-        presidentid = in.readInt();
-    }
-
-    public static final Creator<Course> CREATOR = new Creator<Course>() {
-        @Override
-        public Course createFromParcel(Parcel in) {
-            return new Course(in);
-        }
-
-        @Override
-        public Course[] newArray(int size) {
-            return new Course[size];
-        }
-    };
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
+    private Student president;
+    private int presidentid=-1;
+    private int[] times={};
+    private Teacher teacher;
 
     @Override
     public String toString() {
@@ -53,8 +24,15 @@ public class Course implements Parcelable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", teacherid=" + teacherid +
+                ", president=" + president +
                 ", presidentid=" + presidentid +
+                ", times=" + Arrays.toString(times) +
+                ", teacher=" + teacher +
                 '}';
+    }
+
+    public Course() {
+
     }
 
     public int getId() {
@@ -81,6 +59,14 @@ public class Course implements Parcelable {
         this.teacherid = teacherid;
     }
 
+    public Student getPresident() {
+        return president;
+    }
+
+    public void setPresident(Student president) {
+        this.president = president;
+    }
+
     public int getPresidentid() {
         return presidentid;
     }
@@ -89,9 +75,34 @@ public class Course implements Parcelable {
         this.presidentid = presidentid;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public int[] getTimes() {
+        return times;
+    }
+
+    public void setTimes(int[] times) {
+        this.times = times;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public static Creator<Course> getCREATOR() {
+        return CREATOR;
+    }
+
+    protected Course(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        teacherid = in.readInt();
+        president = in.readParcelable(Student.class.getClassLoader());
+        presidentid = in.readInt();
+        times = in.createIntArray();
+        teacher = in.readParcelable(Teacher.class.getClassLoader());
     }
 
     @Override
@@ -99,7 +110,26 @@ public class Course implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeInt(teacherid);
-        dest.writeParcelable(student, flags);
+        dest.writeParcelable(president, flags);
         dest.writeInt(presidentid);
+        dest.writeIntArray(times);
+        dest.writeParcelable(teacher, flags);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
 }

@@ -2,11 +2,9 @@ package com.zyr.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zyr.common.R;
 import com.zyr.util.ViewUtils;
 
 import java.util.List;
@@ -18,9 +16,10 @@ import java.util.List;
 public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private int layoutId;
     private List<T> data;
-    private Context context;
+    protected Context context;
     private OnItemClickListner onItemClickListner;//单击事件
     private int dp_5;
+    protected View view;
     /**
      * @param context  //上下文
      * @param layoutId //布局id
@@ -35,7 +34,7 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = View.inflate(context, layoutId, null);
+        view = View.inflate(context, layoutId, null);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(dp_5, dp_5, dp_5, 0);
         view.setLayoutParams(layoutParams);
@@ -43,7 +42,7 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
         //单击事件回调
         view.setOnClickListener(v1 -> {
             if (onItemClickListner!=null) {
-                onItemClickListner.onItemClickListner(v1, holder.getLayoutPosition());
+                onItemClickListner.onItemClickListner(v1,data.get(holder.getLayoutPosition()));
             }
         });
 
@@ -67,8 +66,8 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
     }
 
 
-    public interface OnItemClickListner {
-        void onItemClickListner(View v, int position);
+    public interface OnItemClickListner<T> {
+        void onItemClickListner(View v, T t);
     }
 
 
@@ -76,4 +75,8 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
         this.data = data;
         notifyDataSetChanged();
     }
+
+
+
+
 }

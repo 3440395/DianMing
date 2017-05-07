@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_blue"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:gravity="center"
+                android:background="@color/colorPrimary">
+                <ImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/head_teacher_man" />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/iv_head"
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_xh"
+                        android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+
+            <com.zyr.ui.view.OptionItemView
+                android:id="@+id/ov_sex"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:left_text="性别"
+                app:show_bottom_division="true"
+                app:show_jiantou="true"></com.zyr.ui.view.OptionItemView>
+            <com.zyr.ui.view.OptionItemView
+                android:id="@+id/ov_studentid"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:left_text="学号"
+                app:show_bottom_division="true"
+                app:show_jiantou="true"></com.zyr.ui.view.OptionItemView>
+
+            <com.zyr.ui.view.OptionItemView
+                android:id="@+id/ov_phone"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:left_text="电话"
+                app:show_bottom_division="true"
+                app:show_jiantou="true"></com.zyr.ui.view.OptionItemView>
+
+            <com.zyr.ui.view.OptionItemView
+                android:id="@+id/ov_password"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                app:left_text="修改密码"
+                app:show_jiantou="false"
+                app:show_top_division="true"></com.zyr.ui.view.OptionItemView>
+
+            <com.zyr.ui.view.OptionItemView
+                android:id="@+id/ov_exit"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                app:left_text="退出登录"
+                app:show_jiantou="false"
+                app:show_top_division="true"></com.zyr.ui.view.OptionItemView>
+            <com.zyr.ui.view.OptionItemView
+                android:id="@+id/ov_reset"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:clickable="true"
+                app:left_text="重置身份并退出"
+                app:show_bottom_division="true"
+                app:show_jiantou="false"
+                app:show_top_division="true"></com.zyr.ui.view.OptionItemView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

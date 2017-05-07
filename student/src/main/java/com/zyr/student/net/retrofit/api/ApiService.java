@@ -1,66 +1,41 @@
 package com.zyr.student.net.retrofit.api;
 
 
+import com.zyr.entity.BaseEntity;
+import com.zyr.entity.Course;
 import com.zyr.entity.Student;
 
-import retrofit2.http.Field;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
 public interface ApiService {
-//    /**
-//     * 获取启动界面图像
-//     * @return
-//     */
-//    @GET("start-image/1080*1776")
-//    Observable<SplashImgEntity> getSplashImg();
-//
-//    /**
-//     * 获取android最新版本
-//     * @return
-//     */
-//    @GET("version/android/{versionCode}")
-//    Observable<SplashImgEntity> getLatestVersion(@Path("versionCode") String versionCode);
-//
-//
-    /**
-     * 获取最新文章列表
-     * @return
-     */
-    @GET("news/latest")
-    Observable<Student> getLatestDaily();
-
 
     /**
-     * 获取学生
+     * 只需要返回true或者false
      * @return
      */
     @FormUrlEncoded
-    @POST("queryStudent")
-    Observable<Student> query(@Field("name") String name);
-//
-//    /**
-//     * 获取以前的文章列表
-//     * @return
-//     */
-//    @GET("news/before/{date}")
-//    Observable<BeforeDailyEntity> getBeforeDaily(@Path("date") String date);
-//
-//    /**
-//     * 获取相应文章内容
-//     * @param storyId
-//     * @return
-//     */
-//    @GET("news/{storyId}")
-//    Observable<StoryContentEntity> getStoryContent(@Path("storyId") int storyId);
-//
-//    /**
-//     * 获取相应文章的额外信息，如评论数量，获得的赞等
-//     * @param storyId
-//     * @return
-//     */
-//    @GET("story-extra/{storyId}")
-//    Observable<StoryExtraEntity> getStoryExtra(@Path("storyId") int storyId);
+    @POST("core")
+    Observable<BaseEntity> coreInterface(@FieldMap Map<String,String> fieldMap);
+
+    /**
+     *  返回BaseEntity<Student>
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("core")
+    Observable<BaseEntity<Student>> getStudent(@FieldMap Map<String,String> fieldMap);
+
+    /**
+     * 返回BaseEntity<List<Course>>
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("core")
+    Observable<BaseEntity<List<Course>>> getListCourses(@FieldMap Map<String,String> fieldMap);
 }

@@ -1,9 +1,10 @@
-package com.zyr.teacher.handler;
+package com.zyr.teacher.server.handler;
 
 
-import com.google.gson.Gson;
 import com.yanzhenjie.andserver.RequestHandler;
-import com.zyr.entity.Student;
+import com.zyr.common.App;
+import com.zyr.teacher.Helper;
+import com.zyr.teacher.server.RequestParser;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -15,23 +16,26 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * 查询所有学生
  * Created by xuekai on 2017/5/2.
  */
 
-public class StudentHandler implements RequestHandler {
-    private static final String TAG = "StudentHandler";
+public class CoreHandler implements RequestHandler {
+
+    private Helper helper;
+    private String responseJson;
+
+    public CoreHandler() {
+        helper = new Helper(App.getInstance().getApplicationContext());
+    }
+
+    private static final String TAG = "CoreHandler";
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
         Map<String, String> parse = RequestParser.parse(request);
-        String name = parse.get("name");
-
-        Student student = new Student();
-        student.setName(name);
-        Gson gson = new Gson();
-        String json = gson.toJson(student);
-        StringEntity stringEntity = new StringEntity(json, "utf-8");
+        String action = parse.get("action");
+        responseJson=helper.handOut(action,parse);
+        StringEntity stringEntity = new StringEntity(responseJson, "utf-8");
         response.setEntity(stringEntity);
     }
 }

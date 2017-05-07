@@ -35,7 +35,7 @@ public abstract class HomeActivity extends BaseActivity implements MToolbar.OnTe
 
     @Override
     protected void setupViews(Bundle bundle) {
-        int role = bundle.getInt("role");
+         role = bundle.getInt("role");
     }
 
     @Override
@@ -48,6 +48,7 @@ public abstract class HomeActivity extends BaseActivity implements MToolbar.OnTe
         fragmentFactory = createFragmentFactory();
         ((HomeBottomTabFragment) getSupportFragmentManager().findFragmentByTag("HomeBottomTabFragment")).setRole(role);
         ((HomeBottomTabFragment) getSupportFragmentManager().findFragmentByTag("HomeBottomTabFragment")).selectBottomTab(1);
+        ((HomeBottomTabFragment) getSupportFragmentManager().findFragmentByTag("HomeBottomTabFragment")).setTabName();
 
     }
 
@@ -97,7 +98,7 @@ public abstract class HomeActivity extends BaseActivity implements MToolbar.OnTe
                     toolbar.setRightTextView("添加科目");
                 } else {
                     toolbar.setLeftTextView(null);
-                    toolbar.setRightTextView(null);
+                    toolbar.setRightTextView("选课");
                 }
                 break;
         }

@@ -38,8 +38,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table tb_course_time(" +
                 "_id integer primary key autoincrement," +
                 "courseid integer," +
-                "time integer," +
-                "unique  (courseid,time))");//课程时间用数字表示，从周一到周日，每天5节课（上下各2，晚上1）
+                "time text" );//课程时间用数字表示，从周一到周五，每天4节课（上下各2）
 
         db.execSQL("create table tb_course_student(" +
                 "_id integer primary key autoincrement," +
@@ -50,7 +49,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table tb_check(" +
                 "_id integer primary key autoincrement," +
                 "coursetimeid integer," +//签到是按照具体某天的某节课来说的，所以关联了coursetimeid
-                "time text," +//年月日
+                "time text," +//年月日时分秒
                 "studentid integer," +
                 "unique  (coursetimeid,time,studentid))");
 

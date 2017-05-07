@@ -9,8 +9,7 @@ import android.support.annotation.Nullable;
 import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
 import com.yanzhenjie.andserver.website.AssetsWebsite;
-import com.zyr.teacher.handler.NetTestHandler;
-import com.zyr.teacher.handler.StudentHandler;
+import com.zyr.teacher.server.handler.CoreHandler;
 
 /**
  * Created by xuekai on 2017/5/2.
@@ -27,8 +26,7 @@ public class CoreService extends Service {
         AndServer andServer = new AndServer.Build()
                 .port(8080)
                 .timeout(10 * 1000)
-                .registerHandler("nettest", new NetTestHandler())
-                .registerHandler("queryStudent", new StudentHandler())
+                .registerHandler("core", new CoreHandler())
                 .website(new AssetsWebsite(mAssetManager, ""))
                 .listener(mListener)
                 .build();

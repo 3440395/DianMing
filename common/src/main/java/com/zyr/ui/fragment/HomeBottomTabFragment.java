@@ -20,7 +20,7 @@ public class HomeBottomTabFragment extends BaseFragment implements View.OnClickL
     private RelativeLayout rl_tab1, rl_tab2, rl_tab3, rl_tab4;
     private TextView tv_tab_name1, tv_tab_name2, tv_tab_name3, tv_tab_name4;
 
-    public int role = 0;
+    private int role = 0;
 
 
     @Override
@@ -57,10 +57,10 @@ public class HomeBottomTabFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void fetchData(View v) {
-        setTabName();
+
     }
 
-    private void setTabName() {
+    public void setTabName() {
         tv_tab_name1.setText(role == HomeActivity.ROLE_TEACHER ? Constant.tab_names_teacher[0] : Constant.tab_names_student[0]);
         tv_tab_name2.setText(role == HomeActivity.ROLE_TEACHER ? Constant.tab_names_teacher[1] : Constant.tab_names_student[1]);
         tv_tab_name3.setText(role == HomeActivity.ROLE_TEACHER ? Constant.tab_names_teacher[2] : Constant.tab_names_student[2]);
@@ -86,30 +86,29 @@ public class HomeBottomTabFragment extends BaseFragment implements View.OnClickL
      * @time 2016/6/2 19:50
      */
     public void selectBottomTab(int tabPosition) {
-        // TODO: by xk 2017/5/5 13:44 根据角色来设置icon
         ((HomeActivity) mActivity).selectContentFragment(tabPosition);
 
         if (tabPosition == 1) {
-            iv_tab_icon1.setImageResource(R.mipmap.tab_icon_truck_select);
+            iv_tab_icon1.setImageResource(role == HomeActivity.ROLE_TEACHER ? R.mipmap.tab_icon_student_select:R.mipmap.tab_icon_student_select);
             tv_tab_name1.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            iv_tab_icon1.setImageResource(R.mipmap.tab_icon_truck);
+            iv_tab_icon1.setImageResource(role == HomeActivity.ROLE_TEACHER ? R.mipmap.tab_icon_student:R.mipmap.tab_icon_student);
             tv_tab_name1.setTextColor(getResources().getColor(R.color.primary_text));
         }
         if (tabPosition == 2) {
-            iv_tab_icon2.setImageResource(R.mipmap.tab_icon_cargo_select);
+            iv_tab_icon2.setImageResource(role == HomeActivity.ROLE_TEACHER ? R.mipmap.tab_icon_course_select:R.mipmap.tab_icon_course_select);
             tv_tab_name2.setTextColor(getResources().getColor(R.color.colorPrimary));
 
         } else {
-            iv_tab_icon2.setImageResource(R.mipmap.tab_icon_cargo);
+            iv_tab_icon2.setImageResource(role == HomeActivity.ROLE_TEACHER ? R.mipmap.tab_icon_course:R.mipmap.tab_icon_course);
             tv_tab_name2.setTextColor(getResources().getColor(R.color.primary_text));
 
         }
         if (tabPosition == 3) {
-            iv_tab_icon3.setImageResource(R.mipmap.tab_icon_message_select);
+            iv_tab_icon3.setImageResource(role == HomeActivity.ROLE_TEACHER ? R.mipmap.tab_icon_me_select:R.mipmap.tab_icon_me_select);
             tv_tab_name3.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            iv_tab_icon3.setImageResource(R.mipmap.tab_icon_message);
+            iv_tab_icon3.setImageResource(role == HomeActivity.ROLE_TEACHER ? R.mipmap.tab_icon_me:R.mipmap.tab_icon_me);
             tv_tab_name3.setTextColor(getResources().getColor(R.color.primary_text));
 
         }

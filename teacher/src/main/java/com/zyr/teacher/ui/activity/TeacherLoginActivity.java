@@ -14,7 +14,6 @@ import com.zyr.subscirber.ProgressSubscriber;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
 import com.zyr.teacher.ui.TeacherListAdapter;
-import com.zyr.ui.activity.HomeActivity;
 import com.zyr.ui.view.MToolbar;
 import com.zyr.util.RxSchedulerHelper;
 import com.zyr.util.ViewUtils;
@@ -37,7 +36,7 @@ public class TeacherLoginActivity extends BaseActivity {
 
     @Override
     protected void setLayout() {
-        setContentView(R.layout.layout_login);
+        setContentView(R.layout.layout_login_teacher);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class TeacherLoginActivity extends BaseActivity {
 
     @Override
     protected void setupViews(Bundle bundle) {
-        toolbar.setTitle("登录");
+        toolbar.setTitle("教师端入口");
 
         teacherList.setLayoutManager(new LinearLayoutManager(mContext));
         teacherListAdapter = new TeacherListAdapter(mContext);
@@ -69,8 +68,8 @@ public class TeacherLoginActivity extends BaseActivity {
     }
 
     private void showPasswordDialog(Teacher teacher) {
-        View view = View.inflate(mContext,R.layout.dialog_login, null);//这里必须是final的
-        EditText edit = (EditText) view.findViewById(R.id.et_password);//获得输入框对象
+        View view = View.inflate(mContext,R.layout.dialog_edittext, null);//这里必须是final的
+        EditText edit = (EditText) view.findViewById(R.id.et_edittext);//获得输入框对象
         new AlertDialog.Builder(TeacherLoginActivity.this)
                 .setTitle(teacher.getName() + " 您好,请输入密码")//提示框标题
                 .setView(view)
@@ -97,8 +96,9 @@ public class TeacherLoginActivity extends BaseActivity {
                         if (result) {
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("teacher",teacher);
-                            bundle.putInt("role", HomeActivity.ROLE_TEACHER);
+                            bundle.putInt("role",0);
                             toActivity(TeacherHomeActivity.class,bundle);
+                            finish();
                         }else{
                             toast("密码错误");
                         }
@@ -124,7 +124,7 @@ public class TeacherLoginActivity extends BaseActivity {
 
         Observable
                 .create((Observable.OnSubscribe<List<Teacher>>) subscriber -> {
-                    List<Teacher> teachers = dao.queryAllTeacher();
+                    List<Teacher> teachers = dao.queryTeacher(-1);
                     subscriber.onNext(teachers);
                     subscriber.onCompleted();
                 })

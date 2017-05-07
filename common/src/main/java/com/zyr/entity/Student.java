@@ -10,25 +10,71 @@ import android.os.Parcelable;
 public class Student implements Parcelable {
     private String name;
     private String sex;
-    private int studentid;
+    private String studentid;
     private String password;
 
-    public Student() {
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", studentid='" + studentid + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getStudentid() {
+        return studentid;
+    }
+
+    public void setStudentid(String studentid) {
+        this.studentid = studentid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public static Creator<Student> getCREATOR() {
+        return CREATOR;
     }
 
     protected Student(Parcel in) {
         name = in.readString();
         sex = in.readString();
-        studentid = in.readInt();
+        studentid = in.readString();
         password = in.readString();
+    }
+
+    public Student() {
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(sex);
-        dest.writeInt(studentid);
+        dest.writeString(studentid);
         dest.writeString(password);
     }
 
@@ -48,48 +94,4 @@ public class Student implements Parcelable {
             return new Student[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                ", name='" + name + '\'' +
-                ", sex='" + sex + '\'' +
-                ", studentid=" + studentid +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public int getStudentid() {
-        return studentid;
-    }
-
-    public void setStudentid(int studentid) {
-        this.studentid = studentid;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }

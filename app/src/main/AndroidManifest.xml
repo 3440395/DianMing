@@ -16,14 +16,16 @@
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="com.zyr.dianming" />
             </intent-filter>
         </activity>
         <activity android:name="com.zyr.student.ui.activity.StudentLoginActivity" />
+        <activity android:name="com.zyr.student.ui.activity.StudentHomeActivity" />
         <activity android:name="com.zyr.teacher.ui.activity.TeacherHomeActivity" />
         <activity android:name="com.zyr.teacher.ui.activity.TeacherLoginActivity" />
         <activity android:name="com.zyr.teacher.ui.activity.TeacherRegisterActivity" />
+        <activity android:name="com.zyr.student.ui.activity.ChooseCourseActivity" />
         <service android:name="com.zyr.teacher.CoreService" />
     </application>
 

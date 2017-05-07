@@ -49,14 +49,14 @@ public class TeacherListAdapter extends RecyclerView.Adapter<TeacherListAdapter.
         int imgRes;
         if (sex != null) {
             sex = sex.equals("男") ? "♂" : "♀";
-            imgRes = sex.equals("男") ? R.mipmap.head_teacher_man : R.mipmap.head_teacher_women;
+            imgRes = sex.equals("♂") ? R.mipmap.head_teacher_man : R.mipmap.head_teacher_women;
         } else {
             sex = "-";
             imgRes = R.mipmap.head_null;
         }
 
         String phone = datas.get(position).getPhone();
-        if (phone != null) {
+        if (phone == null) {
             phone = "-";
         }
         ((TextView) holder.itemView.findViewById(R.id.tv_name)).setText(datas.get(position).getName());

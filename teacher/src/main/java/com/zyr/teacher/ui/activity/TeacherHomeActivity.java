@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.zyr.common.Constant;
 import com.zyr.entity.Course;
@@ -13,8 +14,10 @@ import com.zyr.entity.Teacher;
 import com.zyr.subscirber.ProgressSubscriber;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
+import com.zyr.teacher.ui.fragment.TeacherMeFragment;
 import com.zyr.ui.activity.HomeActivity;
 import com.zyr.ui.adapter.BaseListRefreshAdapter;
+import com.zyr.ui.adapter.BaseRecycleAdapter;
 import com.zyr.ui.adapter.BaseViewHolder;
 import com.zyr.ui.fragment.FragmentFactory;
 import com.zyr.ui.fragment.RefreshBaseFragment;
@@ -31,10 +34,23 @@ import rx.Observable;
 
 public class TeacherHomeActivity extends HomeActivity {
 
+    /**
+     * 筛选id 按钮点击之后，改变这里，刷新学生数据的课程依据从这里拿
+     */
+    private int[] filterCourseIds;
     private Dao dao;
     private Teacher teacher;
     private RefreshBaseFragment studentManagerFragment;
     private RefreshBaseFragment courseManagerFragment;
+
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public Dao getDao() {
+        return dao;
+    }
 
     @Override
     public FragmentFactory createFragmentFactory() {
@@ -72,15 +88,56 @@ public class TeacherHomeActivity extends HomeActivity {
      * @return
      */
     private Fragment createStudentManagerFragment() {
-        BaseListRefreshAdapter<Teacher> baseListRefreshAdapter = new BaseListRefreshAdapter<Teacher>(mContext, 1, null) {
+        BaseListRefreshAdapter<Student> baseListRefreshAdapter = new BaseListRefreshAdapter<Student>(mContext, R.layout.item_student, null) {
             @Override
-            protected void convert(BaseViewHolder holder, Teacher bean) {
+            public String setEmptyMstContent() {
+                return "您还没有学生";
+            }
 
+            @Override
+            protected void convert(BaseViewHolder holder, Student bean) {
+                holder.setText(R.id.tv_name, "姓名：" + bean.getName());
+                holder.setText(R.id.tv_studentid, "学号：" + bean.getPassword());
+                String sex = bean.getSex();
+                int imgRes;
+                if (sex != null) {
+                    imgRes = sex.equals("男") ? R.mipmap.head_teacher_man : R.mipmap.head_teacher_women;
+                } else {
+                    imgRes = R.mipmap.head_null;
+                }
+                holder.setImageResource(R.id.iv_head, imgRes);
             }
 
             @Override
             public void requestData(SwipeRefreshLayout swipeRefreshLayout) {
+                Observable
+                        .create((Observable.OnSubscribe<List<Student>>) subscriber -> {
+                            //从数据库中查询学生数据
+                            List<Student> students = null;
+                            List<Course> courses = dao.queryCourseByTeacher(teacher.getId());
+                            for (Course course : courses) {
+                                List<Student> students1 = dao.queryStudentsByCourseId(course.getId());
+                                if (students1 != null) {
+                                    students.addAll(students1);
+                                }
+                            }
+                            subscriber.onNext(students);
+                            subscriber.onCompleted();
+                        })
+                        .compose(RxSchedulerHelper.io_main())
+                        .subscribe(new ProgressSubscriber<List<Student>>(TeacherHomeActivity.this, false) {
+                            @Override
+                            public void onNext(List<Student> students) {
+                                setData(students);
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
 
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
             }
         };
         studentManagerFragment = new RefreshBaseFragment<Student>();
@@ -88,19 +145,48 @@ public class TeacherHomeActivity extends HomeActivity {
         return studentManagerFragment;
     }
 
-
     /**
      * 创建课程管理的fragment
      *
      * @return
      */
     private Fragment createCourseManagerFragment() {
+        final String items[] = {"周一 1-2节", "周一 3-4节", "周一 5-6节", "周一 7-8节",
+                "周二 1-2节", "周二 3-4节", "周二 5-6节", "周二 7-8节",
+                "周三 1-2节", "周三 3-4节", "周三 5-6节", "周三 7-8节",
+                "周四 1-2节", "周四 3-4节", "周四 5-6节", "周四 7-8节",
+                "周五 1-2节", "周五 3-4节", "周五 5-6节", "周五 7-8节"};
         BaseListRefreshAdapter<Course> baseListRefreshAdapter = new BaseListRefreshAdapter<Course>(TeacherHomeActivity.this, R.layout.item_course, null) {
             @Override
+            public String setEmptyMstContent() {
+                return "您还没有添加课程";
+            }
+
+            @Override
             protected void convert(BaseViewHolder holder, Course bean) {
-//                holder.setText(R.id.tv_president, "");
-//                holder.setText(R.id.tv_time, "");
+                Student president = bean.getPresident();
+                if (president == null) {
+                    holder.setImageResource(R.id.iv_head, R.mipmap.head_null);
+                    holder.setText(R.id.tv_president, "无班长");
+                } else {
+                    String sex = president.getSex();
+                    int imgRes;
+                    if (sex != null) {
+                        imgRes = sex.equals("男") ? R.mipmap.head_teacher_man : R.mipmap.head_teacher_women;
+                    } else {
+                        imgRes = R.mipmap.head_null;
+                    }
+
+
+                    holder.setImageResource(R.id.iv_head, imgRes);
+                    holder.setText(R.id.tv_president, president.getName());
+                }
                 holder.setText(R.id.tv_name, bean.getName());
+                StringBuffer sb = new StringBuffer();
+                for (int i : bean.getTimes()) {
+                    sb.append(items[i] + "  ");
+                }
+                holder.setText(R.id.tv_time, sb.toString());
             }
 
             @Override
@@ -108,7 +194,24 @@ public class TeacherHomeActivity extends HomeActivity {
                 Observable
                         .create((Observable.OnSubscribe<List<Course>>) subscriber -> {
                             List<Course> courses = dao.queryCourseByTeacher(teacher.getId());
-                            // TODO: by xk 2017/5/6 0:16 拿出课程的学生id，查出学生，放进去
+                            //从数据库中查出班长详细信息，然后放到course中
+                            for (Course course : courses) {
+                                Student student = dao.queryStudentByStudentId(course.getPresidentid());
+                                course.setPresident(student);
+                            }
+
+                            //从数据库中查出该课程的上课时间，然后放到course中
+                            for (Course course : courses) {
+                                String s = dao.queryCourseTime(course.getId());
+                                if (s.length() > 0) {
+                                    String[] split = s.split(",");
+                                    int[] ints = new int[split.length];
+                                    for (int i = 0; i < split.length; i++) {
+                                        ints[i] = Integer.valueOf(split[i]);
+                                    }
+                                    course.setTimes(ints);
+                                }
+                            }
                             subscriber.onNext(courses);
                             subscriber.onCompleted();
                         })
@@ -119,29 +222,93 @@ public class TeacherHomeActivity extends HomeActivity {
                                 setData(courses);
                                 swipeRefreshLayout.setRefreshing(false);
                             }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
                         });
             }
         };
+        baseListRefreshAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner<Course>() {
+
+            @Override
+            public void onItemClickListner(View v, Course o) {
+                final String items[] = {"进入", "设置上课时间"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(TeacherHomeActivity.this);
+                builder.setTitle("请选择操作");
+                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                builder.setItems(items, (dialog, which) -> {
+                    dialog.dismiss();
+                    if (which == 0) {
+//                        toActivity(CourseDetailActivity.class);
+                        Toast.makeText(TeacherHomeActivity.this, "跳转到详情页", Toast.LENGTH_SHORT).show();
+                    } else {
+                        showSetCourseTimeDialog(o.getId());
+                    }
+
+                });
+                builder.create().show();
+            }
+
+            private void showSetCourseTimeDialog(int courseId) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(TeacherHomeActivity.this);
+                builder.setTitle("请设置上课时间"); //设置标题
+                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可  
+                boolean[] selected = new boolean[20];
+                builder.setMultiChoiceItems(items, selected, (dialog, which, isChecked) -> {
+                });
+                builder.setPositiveButton("确定", (dialog, which) -> {
+                    dialog.dismiss();
+                    StringBuffer sb = new StringBuffer();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            sb.append(i + 1);
+                            sb.append(",");
+                        }
+                    }
+                    if (sb.length() > 1) {
+                        String courseTime = sb.substring(0, sb.length() - 1);
+                        saveCourseTime(courseId, courseTime);
+                        courseManagerFragment.onRefresh();
+                    }
+                });
+                builder.create().show();
+            }
+        });
         courseManagerFragment = new RefreshBaseFragment<Course>();
         courseManagerFragment.setAdapter(baseListRefreshAdapter);
         return courseManagerFragment;
     }
 
-    private Fragment createMeFragment() {
-        BaseListRefreshAdapter<Teacher> baseListRefreshAdapter = new BaseListRefreshAdapter<Teacher>(null, 1, null) {
-            @Override
-            protected void convert(BaseViewHolder holder, Teacher bean) {
-
-            }
-
-            @Override
-            public void requestData(SwipeRefreshLayout swipeRefreshLayout) {
-            }
-        };
-        RefreshBaseFragment baseFragment = new RefreshBaseFragment<Student>();
-        baseFragment.setAdapter(baseListRefreshAdapter);
-        return baseFragment;
+    /**
+     * 保存上课时间信息
+     *
+     * @param courseId
+     * @param courseTime
+     */
+    private void saveCourseTime(int courseId, String courseTime) {
+        boolean b = dao.setCourseTime(courseId, courseTime);
+        if (b) {
+            toast("保存成功");
+        } else {
+            toast("保存失败");
+        }
     }
+
+    /**
+     * 创建“我的” fragment
+     *
+     * @return
+     */
+    private Fragment createMeFragment() {
+        TeacherMeFragment teacherMeFragment = new TeacherMeFragment();
+        teacherMeFragment.setData(teacher);
+        return teacherMeFragment;
+    }
+
 
     @Override
     public void onLeftClick() {
@@ -153,7 +320,7 @@ public class TeacherHomeActivity extends HomeActivity {
         String title = toolbar.getTitle();
         if (title.equals(Constant.tab_names_teacher[0])) {
             //筛选
-
+            // TODO: by xk 2017/5/6 11:17 筛选
         }
         if (title.equals(Constant.tab_names_teacher[1])) {
             //添加科目
@@ -192,4 +359,6 @@ public class TeacherHomeActivity extends HomeActivity {
                 .setNegativeButton("取消", null).create().show();
         edit.requestFocus();
     }
+
+
 }

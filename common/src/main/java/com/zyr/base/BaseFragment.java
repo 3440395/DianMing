@@ -20,6 +20,7 @@ public abstract class BaseFragment extends Fragment {
 
     @LayoutRes
     protected int layoutRes;
+    protected View rootView;
 
     @Nullable
     @Override
@@ -28,14 +29,14 @@ public abstract class BaseFragment extends Fragment {
 
         setLayoutRes();
 
-        View v = LayoutInflater.from(getContext()).inflate(layoutRes, container, false);
+        rootView = LayoutInflater.from(getContext()).inflate(layoutRes, container, false);
 
-        findViews(v);
-        setupViews(v);
-        setListener(v);
-        fetchData(v);
+        findViews(rootView);
+        setupViews(rootView);
+        setListener(rootView);
+        fetchData(rootView);
 
-        return v;
+        return rootView;
     }
 
     /**

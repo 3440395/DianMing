@@ -39,7 +39,6 @@ public class Dao {
         contentValues.put("name", name);
         contentValues.put("password", password);
         long id = writableDatabase.insert("tb_teacher", null, contentValues);
-        writableDatabase.close();
         return id != -1;
     }
 
@@ -87,7 +86,6 @@ public class Dao {
         }
 
         long id = writableDatabase.update("tb_teacher", contentValues, "name=?", new String[]{name});
-        writableDatabase.close();
         return id != 0;
     }
 
@@ -113,7 +111,6 @@ public class Dao {
             contentValues.put("name", name);
         }
         long id = writableDatabase.update("tb_student", contentValues, "studentid=?", new String[]{studentid});
-        writableDatabase.close();
         return id != 0;
     }
 
@@ -131,10 +128,8 @@ public class Dao {
         contentValues.put("studentid", studentid);
         contentValues.put("password", password);
         long id = writableDatabase.insert("tb_student", null, contentValues);
-        writableDatabase.close();
         return id != -1;
     }
-
 
 
     /**
@@ -151,7 +146,6 @@ public class Dao {
         ContentValues contentValues = new ContentValues();
         contentValues.put("presidentid", presidentid);
         long id = writableDatabase.update("tb_course", contentValues, "teacherid=? and name=?", new String[]{teacherId + "", name});
-        writableDatabase.close();
         return id != 0;
     }
 
@@ -165,7 +159,6 @@ public class Dao {
         Cursor cursor = readableDatabase.query("tb_teacher", new String[]{}, "name=? and password=?", new String[]{name, password}, null, null, null);
         boolean result = cursor.moveToNext();
         cursor.close();
-        readableDatabase.close();
         return result;
     }
 
@@ -174,13 +167,20 @@ public class Dao {
      *
      * @return
      */
-    public boolean loginStudent(String studentid, String password) {
+    public Student loginStudent(String studentid, String password) {
+        Student student;
         readableDatabase = dbHelper.getReadableDatabase();
-        Cursor cursor = readableDatabase.query("tb_student", new String[]{}, "studentid=? and password=?", new String[]{studentid, password}, null, null, null);
-        boolean result = cursor.moveToNext();
+        Cursor cursor = readableDatabase.query("tb_student", new String[]{"name", "sex", "studentid"}, "studentid=? and password=?", new String[]{studentid, password}, null, null, null);
+        if (cursor.moveToNext()) {
+            student = new Student();
+            student.setSex(getStringFromCursor(cursor, "sex"));
+            student.setStudentid(getStringFromCursor(cursor, "studentid"));
+            student.setName(getStringFromCursor(cursor, "name"));
+        } else {
+            student = null;
+        }
         cursor.close();
-        readableDatabase.close();
-        return result;
+        return student;
     }
 
     /**
@@ -195,11 +195,8 @@ public class Dao {
         contentValues.put("teacherId", teacherId);
         contentValues.put("name", name);
         long id = writableDatabase.insert("tb_course", null, contentValues);
-        writableDatabase.close();
         return id != -1;
     }
-
-
 
 
     /**
@@ -209,15 +206,55 @@ public class Dao {
      * @param time     课程的时间一天5节课，周一到周日
      * @return
      */
-    public boolean setCourseTime(int courseid, int time) {
+    public boolean setCourseTime(int courseid, String time) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("courseid", courseid);
         contentValues.put("time", time);
-        long id = writableDatabase.insert("tb_course_time", null, contentValues);
-        writableDatabase.close();
-        return id != -1;
+        String s = queryCourseTime(courseid);
+        if (s.equals("")) {
+            long id = writableDatabase.insert("tb_course_time", null, contentValues);
+            return id != -1;
+        } else {
+            return updateCourseTime(courseid, time);
+        }
+    }
+
+    /**
+     * 设置课程时间（一个老师的一门课程可能由多个上课时间，参数就是这两个）
+     *
+     * @param courseid 课程的主键_id
+     * @param time     课程的时间一天5节课，周一到周日
+     * @return
+     */
+    private boolean updateCourseTime(int courseid, String time) {
+        writableDatabase = dbHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("courseid", courseid);
+        contentValues.put("time", time);
+        long id = writableDatabase.update("tb_course_time", contentValues, "courseid=?", new String[]{courseid + ""});
+        return id != 0;
+    }
+
+
+    /**
+     * 查询课程时间（一个老师的一门课程可能由多个上课时间）
+     *
+     * @param courseid 课程的主键_id
+     * @return
+     */
+    public String queryCourseTime(int courseid) {
+        readableDatabase = dbHelper.getReadableDatabase();
+        String time = "";
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("courseid", courseid);
+        Cursor cursor = readableDatabase.query("tb_course_time", null, "courseid=?", new String[]{courseid + ""}, null, null, null, null);
+        while (cursor.moveToNext()) {
+            time = getStringFromCursor(cursor, "time");
+        }
+        return time;
     }
 
     /**
@@ -234,7 +271,6 @@ public class Dao {
         contentValues.put("studentid", studentid);
         contentValues.put("courseid", courseid);
         long id = writableDatabase.insert("tb_course_student", null, contentValues);
-        writableDatabase.close();
         return id != -1;
     }
 
@@ -255,7 +291,6 @@ public class Dao {
         contentValues.put("time", time);
         contentValues.put("coursetimeid", coursetimeid);
         long id = writableDatabase.insert("tb_check", null, contentValues);
-        writableDatabase.close();
         return id != -1;
     }
 
@@ -275,7 +310,6 @@ public class Dao {
         contentValues.put("time", time);
         contentValues.put("coursetimeid", coursetimeid);
         long id = writableDatabase.insert("tb_leave", null, contentValues);
-        writableDatabase.close();
         return id != -1;
     }
 
@@ -300,7 +334,6 @@ public class Dao {
             students.add(student);
         }
         cursor.close();
-        readableDatabase.close();
         return students;
     }
 
@@ -318,24 +351,28 @@ public class Dao {
             student = new Student();
             student.setName(getStringFromCursor(cursor, "name"));
             student.setSex(getStringFromCursor(cursor, "sex"));
-            student.setStudentid(getIntFromCursor(cursor, "studentId"));
+            student.setStudentid(getStringFromCursor(cursor, "studentId"));
         }
         cursor.close();
-        readableDatabase.close();
         return student;
     }
 
     /**
-     * 查询所有的老师
+     * 查询老师根据id
      *
+     * @param teacherId -1表示返回所有
      * @return
      */
-    public List<Teacher> queryAllTeacher() {
+    public List<Teacher> queryTeacher(int teacherId) {
+        Cursor cursor;
         List<Teacher> teachers = new ArrayList<>();
         Teacher teacher = null;
         readableDatabase = dbHelper.getReadableDatabase();
-
-        Cursor cursor = readableDatabase.query("tb_teacher", new String[]{"_id", "name", "sex", "phone"}, null, null, null, null, null);
+        if (teacherId==-1) {
+            cursor = readableDatabase.query("tb_teacher", new String[]{"_id", "name", "sex", "phone"}, null, null, null, null, null);
+        }else{
+             cursor = readableDatabase.query("tb_teacher", new String[]{"_id", "name", "sex", "phone"}, "_id=?", new String[]{teacherId+""}, null, null, null);
+        }
         while (cursor.moveToNext()) {
             teacher = new Teacher();
             teacher.setId(getIntFromCursor(cursor, "_id"));
@@ -345,11 +382,12 @@ public class Dao {
             teachers.add(teacher);
         }
         cursor.close();
-        readableDatabase.close();
         return teachers;
     }
+
     /**
      * 通过teacher查询所有的课程
+     *
      * @param teacherid
      * @return
      */
@@ -369,7 +407,95 @@ public class Dao {
             courses.add(course);
         }
         cursor.close();
-        readableDatabase.close();
+        return courses;
+    }
+
+    /**
+     * 通过学号查询未选中的课程
+     *
+     * @param studentid
+     * @return
+     */
+    public List<Course> queryUnCheckedCourseByStudet(String studentid) {
+        List<Course> oldCourses = queryAllCourse();
+        List<Course> newCourses = new ArrayList<>();
+        newCourses.addAll(oldCourses);
+        List<Integer> courseIds = new ArrayList<>();
+        Course course = null;
+        readableDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = readableDatabase.query("tb_course_student", null, "studentid=?", new String[]{studentid + ""}, null, null, null);
+        while (cursor.moveToNext()) {
+            int courseid = getIntFromCursor(cursor, "courseid");
+            courseIds.add(courseid);
+        }
+
+        for (Course oldCourse : oldCourses) {
+            int id = oldCourse.getId();
+            boolean contains = courseIds.contains(id);
+            if (contains) {
+                //oldCourse已经被选中
+                newCourses.remove(oldCourse);
+            }
+        }
+        cursor.close();
+        return newCourses;
+    }
+
+    /**
+     * 通过学号查询已经选中的课程
+     *
+     * @param studentid
+     * @return
+     */
+    public List<Course> queryCheckedCourseByStudet(String studentid) {
+        List<Course> oldCourses = queryAllCourse();
+        List<Course> newCourses = new ArrayList<>();
+        List<Integer> courseIds = new ArrayList<>();
+        Course course = null;
+        readableDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = readableDatabase.query("tb_course_student", null, "studentid=?", new String[]{studentid + ""}, null, null, null);
+        while (cursor.moveToNext()) {
+            int courseid = getIntFromCursor(cursor, "courseid");
+            courseIds.add(courseid);
+        }
+
+        for (Course oldCourse : oldCourses) {
+            int id = oldCourse.getId();
+            boolean contains = courseIds.contains(id);
+            if (contains) {
+                //oldCourse已经被选中
+                newCourses.add(oldCourse);
+            }
+        }
+        cursor.close();
+        return newCourses;
+    }
+
+    /**
+     * 查询所有课程
+     *
+     * @return
+     */
+    public List<Course> queryAllCourse() {
+        List<Course> courses = new ArrayList<>();
+        Course course = null;
+        readableDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = readableDatabase.query("tb_course", null, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            course = new Course();
+            int id = getIntFromCursor(cursor, "_id");
+            String name = getStringFromCursor(cursor, "name");
+            int presidentid = getIntFromCursor(cursor, "presidentid");
+            int teacherid = getIntFromCursor(cursor, "teacherid");
+            List<Teacher> teachers = queryTeacher(teacherid);
+            course.setId(id);
+            course.setName(name);
+            course.setPresidentid(presidentid);
+            course.setTeacherid(teacherid);
+            course.setTeacher(teachers.get(0));
+            courses.add(course);
+        }
+        cursor.close();
         return courses;
     }
 

@@ -15,34 +15,7 @@
         android:background="?android:attr/selectableItemBackground">
 
         <LinearLayout
-            android:id="@+id/president"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_head"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher" />
-
-            <TextView
-                android:id="@+id/tv_president"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="班长" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/course"
-            android:layout_marginRight="10dp"
+            android:id="@+id/student"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -55,21 +28,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/president"
-                android:text="语文"
-                android:textSize="25sp" />
+                android:text="姓名：薛凯"
+                android:textSize="23sp" />
 
             <TextView
-                android:id="@+id/tv_time"
+                android:id="@+id/tv_studentid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 android:layout_below="@id/tv_name"
-                android:layout_marginLeft="5dp"
-                android:ellipsize="end"
                 android:layout_toRightOf="@id/president"
-                android:text=""
-                android:textSize="15sp" />
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="学号：2013005851"
+                android:textSize="18sp" />
         </LinearLayout>
+
+
+            <ImageView
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/iv_head"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher" />
+
+
 
 
     </RelativeLayout>
