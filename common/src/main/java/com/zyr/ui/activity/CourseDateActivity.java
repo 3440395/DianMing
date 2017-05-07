@@ -25,7 +25,7 @@ import java.util.List;
  * Created by xuekai on 2017/5/7.
  */
 
-public class CourseDateActivity extends BaseActivity {
+public abstract class CourseDateActivity extends BaseActivity {
 
     private ViewGroup root;
     private MToolbar toolbar;
@@ -36,7 +36,7 @@ public class CourseDateActivity extends BaseActivity {
 
     @Override
     protected void setLayout() {
-        setContentView(R.layout.activity_course_date);
+        setContentView(R.layout.activity_recyclerview_refresh);
     }
 
     @Override
@@ -91,11 +91,6 @@ public class CourseDateActivity extends BaseActivity {
                 setData(stringList);
             }
         };
-        baseListRefreshAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner<Course>() {
-            @Override
-            public void onItemClickListner(View v, Course o) {
-            }
-        });
         fragment.setAdapter(baseListRefreshAdapter);
         baseListRefreshAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner<String>() {
             @Override
@@ -105,16 +100,16 @@ public class CourseDateActivity extends BaseActivity {
                 bundle.putParcelable("student",student);
                 bundle.putInt("courseTime",courseTime);
                 bundle.putString("courseDate",o);
-                toActivity(CheckInfoActivity.class,bundle);
+                toCheckInfoActivity(bundle);
             }
         });
-
-
-
-
         fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.root, fragment).commit();
     }
+
+
+    public abstract void toCheckInfoActivity(Bundle bundle );
+
 
     @Override
     protected void setListener() {

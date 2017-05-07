@@ -27,8 +27,10 @@
         <activity android:name="com.zyr.teacher.ui.activity.TeacherLoginActivity" />
         <activity android:name="com.zyr.teacher.ui.activity.TeacherRegisterActivity" />
         <activity android:name="com.zyr.student.ui.activity.ChooseCourseActivity" />
-        <activity android:name="com.zyr.ui.activity.CourseDateActivity" />
-        <activity android:name="com.zyr.ui.activity.CheckInfoActivity" />
+        <activity android:name="com.zyr.student.ui.activity.CourseDateActivityStudent" />
+        <activity android:name="com.zyr.teacher.ui.activity.CourseDateActivityTeacher" />
+        <activity android:name="com.zyr.teacher.ui.activity.CheckInfoActivityTeacher" />
+        <activity android:name="com.zyr.student.ui.activity.CheckInfoActivityStudent" />
 
         <service android:name="com.zyr.teacher.CoreService" />
     </application>

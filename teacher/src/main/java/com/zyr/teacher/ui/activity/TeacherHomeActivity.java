@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.zyr.common.Constant;
 import com.zyr.entity.Course;
@@ -16,7 +15,6 @@ import com.zyr.subscirber.ProgressSubscriber;
 import com.zyr.teacher.R;
 import com.zyr.teacher.db.Dao;
 import com.zyr.teacher.ui.fragment.TeacherMeFragment;
-import com.zyr.ui.activity.CourseDateActivity;
 import com.zyr.ui.activity.HomeActivity;
 import com.zyr.ui.adapter.BaseListRefreshAdapter;
 import com.zyr.ui.adapter.BaseRecycleAdapter;
@@ -302,7 +300,7 @@ public class TeacherHomeActivity extends HomeActivity {
             Bundle bundle = new Bundle();
             bundle.putParcelable("course",o);
             bundle.putInt("courseTime",which+1);
-            toActivity(CourseDateActivity.class, bundle);
+            toActivity(CourseDateActivityTeacher.class, bundle);
         });
         builder.create().show();
     }

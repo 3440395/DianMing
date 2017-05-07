@@ -249,7 +249,7 @@ public class StudentHomeActivity extends HomeActivity {
             bundle.putParcelable("course",o);
             bundle.putParcelable("student",student);
             bundle.putInt("courseTime",which+1);
-            toActivity(CourseDateActivity.class, bundle);
+            toActivity(CourseDateActivityStudent.class, bundle);
         });
         builder.create().show();
     }

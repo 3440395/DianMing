@@ -2,7 +2,6 @@ package com.zyr.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 /**
  * Created by xuekai on 2017/5/3.
@@ -13,6 +12,7 @@ public class Student implements Parcelable{
     private String sex;
     private String studentid;
     private String password;
+
 
 
     @Override

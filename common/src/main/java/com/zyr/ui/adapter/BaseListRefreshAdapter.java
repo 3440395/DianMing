@@ -44,7 +44,7 @@ public abstract class BaseListRefreshAdapter<T> extends BaseRecycleAdapter<T> {
     @Override
     public void setData(List<T> data) {
         super.setData(data);
-        if (data.size() == 0) {
+        if (data==null||data.size() == 0) {
             showEmptyMsg(true);
         } else {
             showEmptyMsg(false);

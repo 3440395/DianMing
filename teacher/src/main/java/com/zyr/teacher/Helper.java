@@ -33,7 +33,7 @@ public class Helper {
         switch (action) {
             case "register":
                 String studentid = parse.get("studentid");
-                String password = parse.get("studentid");
+                String password = parse.get("password");
                 responseJson = register(studentid, password);
                 break;
             case "login":

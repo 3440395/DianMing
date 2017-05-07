@@ -294,6 +294,32 @@ public class Dao {
         return id != -1;
     }
 
+
+
+    /**
+     * 查询签到信息
+     *
+     * @param studentid    学生id
+     * @param time         年月日
+     * @param date 课程id（老师和课程名组成）
+     * @return
+     */
+    public boolean querycheckIn(String studentid, int time, String date) {
+        writableDatabase = dbHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("studentid", studentid);
+        contentValues.put("time", time);
+        contentValues.put("date", date);
+        Cursor cursor = readableDatabase.query("tb_check", null, "studentid=? and time=? and date=?", new String[]{studentid,time+"",date}, null, null, null);
+        if (cursor.moveToNext()) {
+            return true;
+        }
+        return false;
+    }
+
+
+
     /**
      * 请假
      *
