@@ -380,7 +380,6 @@ public class TeacherHomeActivity extends HomeActivity {
         String title = toolbar.getTitle();
         if (title.equals(Constant.tab_names_teacher[0])) {
             //筛选
-            // TODO: by xk 2017/5/6 11:17 筛选
             showShaixuanDialog();
 
         }
