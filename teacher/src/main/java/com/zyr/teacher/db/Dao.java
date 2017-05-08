@@ -135,17 +135,16 @@ public class Dao {
     /**
      * 为课程设置班长（课程名和老师组成了一门课程）
      *
-     * @param teacherId
-     * @param name
+     * @param courseid
      * @param presidentid 班长对应的studentid
      * @return
      */
-    public boolean setPresident(int teacherId, String name, int presidentid) {
+    public boolean setPresident(int courseid, int presidentid) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("presidentid", presidentid);
-        long id = writableDatabase.update("tb_course", contentValues, "teacherid=? and name=?", new String[]{teacherId + "", name});
+        long id = writableDatabase.update("tb_course", contentValues, "_id=? ", new String[]{courseid + ""});
         return id != 0;
     }
 

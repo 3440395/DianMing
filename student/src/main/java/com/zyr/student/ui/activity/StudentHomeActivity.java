@@ -178,7 +178,7 @@ public class StudentHomeActivity extends HomeActivity {
                     String sex = president.getSex();
                     int imgRes;
                     if (sex != null) {
-                        imgRes = sex.equals("男") ? R.mipmap.head_teacher_man : R.mipmap.head_teacher_women;
+                        imgRes = sex.equals("男") ? R.mipmap.head_student_boy : R.mipmap.head_student_girl;
                     } else {
                         imgRes = R.mipmap.head_null;
                     }

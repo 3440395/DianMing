@@ -38,7 +38,7 @@ public class TeacherHomeActivity extends HomeActivity {
     /**
      * 筛选id 按钮点击之后，改变这里，刷新学生数据的课程依据从这里拿
      */
-    private int[] filterCourseIds;
+    private int filterCourseId=-1;
     private Dao dao;
     private Teacher teacher;
     private RefreshBaseFragment studentManagerFragment;
@@ -116,12 +116,24 @@ public class TeacherHomeActivity extends HomeActivity {
                             //从数据库中查询学生数据
                             List<Student> students = new ArrayList<>();
                             List<Course> courses = dao.queryCourseByTeacher(teacher.getId());
-                            for (Course course : courses) {
-                                List<Student> students1 = dao.queryStudentsByCourseId(course.getId());
-                                if (students1 != null) {
-                                    students.addAll(students1);
+                            if (filterCourseId == -1) {
+                                for (Course course : courses) {
+                                    List<Student> students1 = dao.queryStudentsByCourseId(course.getId());
+                                    if (students1 != null) {
+                                        students.addAll(students1);
+                                    }
+                                }
+                            } else {
+                                for (Course course : courses) {
+                                    if (course.getId() == filterCourseId) {
+                                        List<Student> students1 = dao.queryStudentsByCourseId(course.getId());
+                                        if (students1 != null) {
+                                            students.addAll(students1);
+                                        }
+                                    }
                                 }
                             }
+
 
                             List<Student> newStudents = removeDuplicate(students);
                             subscriber.onNext(newStudents);
@@ -143,6 +155,21 @@ public class TeacherHomeActivity extends HomeActivity {
                         });
             }
         };
+        baseListRefreshAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner<Student>() {
+            @Override
+            public void onItemClickListner(View v, Student o) {
+                if (filterCourseId==-1) {
+                    toast("请先筛选学生");
+                }else{
+                    boolean b = dao.setPresident(filterCourseId, Integer.parseInt(o.getStudentid()));
+                    if (b) {
+                        toast("设置班长成功");
+                    }else{
+                        toast("设置班长失败");
+                    }
+                }
+            }
+        });
         studentManagerFragment = new RefreshBaseFragment<Student>();
         studentManagerFragment.setAdapter(baseListRefreshAdapter);
         return studentManagerFragment;
@@ -304,7 +331,7 @@ public class TeacherHomeActivity extends HomeActivity {
             bundle.putParcelable("course", o);
 
             String content = items[which];
-            int courseTime=0;
+            int courseTime = 0;
             for (int i = 0; i < TeacherHomeActivity.this.items.length; i++) {
                 if (TeacherHomeActivity.this.items[i].equals(content)) {
                     courseTime = i;
@@ -354,11 +381,34 @@ public class TeacherHomeActivity extends HomeActivity {
         if (title.equals(Constant.tab_names_teacher[0])) {
             //筛选
             // TODO: by xk 2017/5/6 11:17 筛选
+            showShaixuanDialog();
+
         }
         if (title.equals(Constant.tab_names_teacher[1])) {
             //添加科目
             showCreateCourseDialog(teacher);
         }
+    }
+
+    private void showShaixuanDialog() {
+
+        List<Course> courses = dao.queryCourseByTeacher(teacher.getId());
+        final String items[] = new String[courses.size()];
+
+        for (int i = 0; i < courses.size(); i++) {
+            items[i] = courses.get(i).getName();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(TeacherHomeActivity.this);
+        builder.setTitle("请选择筛选学生的课程");
+        builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+        builder.setItems(items, (dialog, which) -> {
+            dialog.dismiss();
+            Course course = courses.get(which);
+            filterCourseId = course.getId();
+            studentManagerFragment.onRefresh();
+
+        });
+        builder.create().show();
     }
 
     private void createCourse(String courseName) {
