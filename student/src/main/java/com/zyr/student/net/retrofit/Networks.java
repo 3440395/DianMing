@@ -24,18 +24,18 @@ public class Networks {
     private Retrofit retrofit;
     private ApiService apiService;
     private static Networks networks;
-    private final OkHttpClient httpClientBuilder;
+    private  OkHttpClient httpClientBuilder;
 
 
     //构造方法私有
     private Networks() {
-
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         httpClientBuilder = new OkHttpClient
                 .Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(logging)
                 .build();
 
 
