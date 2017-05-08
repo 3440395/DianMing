@@ -39,12 +39,13 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void fetchData() {
-        // TODO: by xk 2017/5/6 19:40 服务应该在teacher端开启
+        // TODO: by xk 2017/5/6 19:40 服务应该在teacher端开启 这行代码放到下面
         startService(new Intent(SplashActivity.this, CoreService.class));
         int role = SharedPreferencesUtil.getInt(mContext, Constant.SP_KEY_CURRENT_ROLE);
         switch (role) {
             case 0://跳转到老师登录页面
                 toActivity(TeacherLoginActivity.class);
+//                startService(new Intent(SplashActivity.this, CoreService.class));
                 finish();
                 break;
             case 1://跳转到学生登录页面
