@@ -12,11 +12,13 @@ import com.zyr.entity.CheckInfo;
 import com.zyr.entity.Course;
 import com.zyr.entity.Student;
 import com.zyr.ui.adapter.BaseListRefreshAdapter;
-import com.zyr.ui.adapter.BaseRecycleAdapter;
 import com.zyr.ui.adapter.BaseViewHolder;
 import com.zyr.ui.fragment.RefreshBaseFragment;
 import com.zyr.ui.view.MToolbar;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public abstract class CheckInfoActivity extends BaseActivity {
             "周四 1-2节", "周四 3-4节", "周四 5-6节", "周四 7-8节",
             "周五 1-2节", "周五 3-4节", "周五 5-6节", "周五 7-8节"};
     private boolean isAdmin = false;//是否拥有管理权限
-    private Student student;
+    protected Student student;
     protected Course course;
     protected int courseTime;
     protected String courseDate;
@@ -82,7 +84,52 @@ public abstract class CheckInfoActivity extends BaseActivity {
 
             @Override
             protected void convert(BaseViewHolder holder, CheckInfo bean) {
-                // TODO: by xk 2017/5/8 0:17
+                holder.setText(R.id.tv_name, bean.getStudent().getName()+"("+bean.getStudent().getStudentid()+")");
+                holder.setText(R.id.tv_time, courseDate + " " + items[courseTime]);
+                if (bean.isCheck()) {
+                    holder.setText(R.id.tv_check, "已签到");
+                    holder.setTextColor(R.id.tv_check, 0xff25D1A6);
+                    holder.setOnClickListener(R.id.tv_check, null);
+
+                } else {
+                    if (student != null) {
+                        if (student.getStudentid().equals(bean.getStudent().getStudentid())) {
+                            //是自己
+                            SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
+                            Calendar calendar = Calendar.getInstance();
+                            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                            String date = df.format(new Date());
+                            boolean isNow = isNow(hour, courseTime);
+                            if (date.equals(courseDate) && isNow) {
+                                //这节课允许签到
+                                holder.setText(R.id.tv_check, "点击签到");
+                                holder.setTextColor(R.id.tv_check, 0xFFE2C716);
+                                holder.setOnClickListener(R.id.tv_check, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        checkIn(fragment);
+                                    }
+                                });
+                            } else {
+                                holder.setOnClickListener(R.id.tv_check, null);
+                                holder.setText(R.id.tv_check, "未签到");
+                                holder.setTextColor(R.id.tv_check, 0xFFE02724);
+                            }
+                        } else {
+                            holder.setOnClickListener(R.id.tv_check, null);
+                            holder.setText(R.id.tv_check, "未签到");
+                            holder.setTextColor(R.id.tv_check, 0xFFE02724);
+                        }
+
+
+                    } else {
+                        //是老师
+                        holder.setText(R.id.tv_check, "未签到");
+                        holder.setTextColor(R.id.tv_check, 0xFFE02724);
+                        holder.setOnClickListener(R.id.tv_check, null);
+                    }
+
+                }
             }
 
             @Override
@@ -90,23 +137,68 @@ public abstract class CheckInfoActivity extends BaseActivity {
                 List<CheckInfo> checkInfos;
                 if (isAdmin) {
                     //获取该课程的所有学生
-                    checkInfos = requestAllStudentByCourseId(swipeRefreshLayout);
+                    requestAllStudentByCourseId(swipeRefreshLayout, this);
                 } else {
                     //仅获取自己
-                    checkInfos = requestSelf(swipeRefreshLayout);
+                    requestSelf(swipeRefreshLayout, this);
                 }
-                setData(checkInfos);
+
             }
 
         };
         fragment.setAdapter(baseListRefreshAdapter);
-        baseListRefreshAdapter.setOnItemClickListner(new BaseRecycleAdapter.OnItemClickListner<Course>() {
-            @Override
-            public void onItemClickListner(View v, Course o) {
-            }
-        });
         fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.root, fragment).commit();
+    }
+
+//    public static void main(String args[]) {
+//        isNow(1, 2);
+//        isNow(1, 3);
+//        isNow(1, 4);
+//        isNow(1, 5);
+//        isNow(1, 6);
+//        isNow(1, 7);
+//        isNow(1, 8);
+//        isNow(1, 9);
+//        isNow(1, 10);
+//        isNow(1, 11);
+//        isNow(1, 12);
+//    }
+
+
+    /**
+     * 该节课是现在
+     *
+     * @param hour
+     * @param courseTime
+     * @return
+     */
+    protected  boolean isNow(int hour, int courseTime) {
+        int i = courseTime % 4;
+
+        switch (i) {
+            case 0:
+                if (hour < 10 && hour >= 8) {
+                    return true;
+                }
+                break;
+            case 1:
+                if (hour < 12 && hour >= 10) {
+                    return true;
+                }
+                break;
+            case 2:
+                if (hour < 16 && hour >= 14) {
+                    return true;
+                }
+                break;
+            case 3:
+                if (hour < 18 && hour >= 16) {
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
 //    /**
@@ -154,12 +246,20 @@ public abstract class CheckInfoActivity extends BaseActivity {
     /**
      * 获取该课程的所有学生
      */
-    public abstract List<CheckInfo> requestAllStudentByCourseId(SwipeRefreshLayout swipeRefreshLayout);
+    public abstract void requestAllStudentByCourseId(SwipeRefreshLayout swipeRefreshLayout, BaseListRefreshAdapter<CheckInfo> baseListRefreshAdapter);
+
+    /**
+     * 签到
+     *
+     * @return
+     * @param fragment
+     */
+    public abstract void checkIn(RefreshBaseFragment<CheckInfo> fragment);
 
     /**
      * 获取自己
      */
-    public abstract List<CheckInfo> requestSelf(SwipeRefreshLayout swipeRefreshLayout);
+    public abstract void requestSelf(SwipeRefreshLayout swipeRefreshLayout, BaseListRefreshAdapter<CheckInfo> baseListRefreshAdapter);
 
     @Override
     protected void setListener() {

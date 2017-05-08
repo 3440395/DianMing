@@ -26,8 +26,23 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setImageResource(int id, int resouceId) {
-        ImageView img= (ImageView) convertView.findViewById(id);
+        ImageView img = (ImageView) convertView.findViewById(id);
         img.setImageResource(resouceId);
+    }
+
+    public void setOnClickListener(int id, View.OnClickListener listener) {
+        TextView tx = (TextView) convertView.findViewById(id);
+        if (listener == null) {
+            tx.setClickable(false);
+        } else {
+            tx.setClickable(true);
+            tx.setOnClickListener(listener);
+        }
+    }
+
+    public void setTextColor(int id, int color) {
+        TextView tx = (TextView) convertView.findViewById(id);
+        tx.setTextColor(color);
     }
 
 }

@@ -2,6 +2,7 @@ package com.zyr.student.net.retrofit.api;
 
 
 import com.zyr.entity.BaseEntity;
+import com.zyr.entity.CheckInfo;
 import com.zyr.entity.Course;
 import com.zyr.entity.Student;
 
@@ -38,4 +39,12 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("core")
     Observable<BaseEntity<List<Course>>> getListCourses(@FieldMap Map<String,String> fieldMap);
+
+    /**
+     * 返回BaseEntity<List<CheckInfo>>
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("core")
+    Observable<BaseEntity<List<CheckInfo>>> getListCheckInfo(@FieldMap Map<String,String> fieldMap);
 }

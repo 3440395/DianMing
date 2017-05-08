@@ -147,11 +147,13 @@ public class TeacherHomeActivity extends HomeActivity {
         studentManagerFragment.setAdapter(baseListRefreshAdapter);
         return studentManagerFragment;
     }
+
     final String items[] = {"周一 1-2节", "周一 3-4节", "周一 5-6节", "周一 7-8节",
             "周二 1-2节", "周二 3-4节", "周二 5-6节", "周二 7-8节",
             "周三 1-2节", "周三 3-4节", "周三 5-6节", "周三 7-8节",
             "周四 1-2节", "周四 3-4节", "周四 5-6节", "周四 7-8节",
             "周五 1-2节", "周五 3-4节", "周五 5-6节", "周五 7-8节"};
+
     /**
      * 创建课程管理的fragment
      *
@@ -269,7 +271,7 @@ public class TeacherHomeActivity extends HomeActivity {
                     StringBuffer sb = new StringBuffer();
                     for (int i = 0; i < selected.length; i++) {
                         if (selected[i]) {
-                            sb.append(i + 1);
+                            sb.append(i);
                             sb.append(",");
                         }
                     }
@@ -286,11 +288,12 @@ public class TeacherHomeActivity extends HomeActivity {
         courseManagerFragment.setAdapter(baseListRefreshAdapter);
         return courseManagerFragment;
     }
+
     private void showChooseCourseTimeDialog(Course o) {
 
         final String items[] = new String[o.getTimes().length];
         for (int i = 0; i < o.getTimes().length; i++) {
-            items[i]=this.items[o.getTimes()[i]];
+            items[i] = this.items[o.getTimes()[i]];
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(TeacherHomeActivity.this);
         builder.setTitle("请选择具体的课");
@@ -298,12 +301,21 @@ public class TeacherHomeActivity extends HomeActivity {
         builder.setItems(items, (dialog, which) -> {
             dialog.dismiss();
             Bundle bundle = new Bundle();
-            bundle.putParcelable("course",o);
-            bundle.putInt("courseTime",which+1);
+            bundle.putParcelable("course", o);
+
+            String content = items[which];
+            int courseTime=0;
+            for (int i = 0; i < TeacherHomeActivity.this.items.length; i++) {
+                if (TeacherHomeActivity.this.items[i].equals(content)) {
+                    courseTime = i;
+                }
+            }
+            bundle.putInt("courseTime", courseTime);
             toActivity(CourseDateActivityTeacher.class, bundle);
         });
         builder.create().show();
     }
+
     /**
      * 保存上课时间信息
      *

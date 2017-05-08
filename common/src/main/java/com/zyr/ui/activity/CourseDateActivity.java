@@ -73,7 +73,7 @@ public abstract class CourseDateActivity extends BaseActivity {
             public void requestData(SwipeRefreshLayout swipeRefreshLayout) {
                 List<String> stringList=new ArrayList<>();
                 //星期几
-                int day=courseTime%4+1;
+                int day=courseTime/4+2;
                 SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
                 Calendar cal = Calendar.getInstance();
                 int year = cal.get(Calendar.YEAR);

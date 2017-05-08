@@ -26,6 +26,9 @@ public class Student implements Parcelable{
     }
 
     public String getName() {
+        if (name==null||"".equals(name)) {
+            return "未设置名字";
+        }
         return name;
     }
 

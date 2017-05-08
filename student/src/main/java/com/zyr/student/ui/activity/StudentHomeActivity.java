@@ -15,7 +15,6 @@ import com.zyr.student.R;
 import com.zyr.student.net.ProgressSubscriber;
 import com.zyr.student.net.retrofit.Networks;
 import com.zyr.student.ui.fragment.StudentMeFragment;
-import com.zyr.ui.activity.CourseDateActivity;
 import com.zyr.ui.activity.HomeActivity;
 import com.zyr.ui.adapter.BaseListRefreshAdapter;
 import com.zyr.ui.adapter.BaseRecycleAdapter;
@@ -248,7 +247,15 @@ public class StudentHomeActivity extends HomeActivity {
             Bundle bundle = new Bundle();
             bundle.putParcelable("course",o);
             bundle.putParcelable("student",student);
-            bundle.putInt("courseTime",which+1);
+
+            String content = items[which];
+            int courseTime=0;
+            for (int i = 0; i < StudentHomeActivity.this.items.length; i++) {
+                if (StudentHomeActivity.this.items[i].equals(content)) {
+                    courseTime = i;
+                }
+            }
+            bundle.putInt("courseTime",courseTime);
             toActivity(CourseDateActivityStudent.class, bundle);
         });
         builder.create().show();

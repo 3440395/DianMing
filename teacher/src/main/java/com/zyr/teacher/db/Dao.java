@@ -203,7 +203,7 @@ public class Dao {
      * 设置课程时间（一个老师的一门课程可能由多个上课时间，参数就是这两个）
      *
      * @param courseid 课程的主键_id
-     * @param time     课程的时间一天5节课，周一到周日
+     * @param time     课程的时间一天4节课，周一到周五 0开始
      * @return
      */
     public boolean setCourseTime(int courseid, String time) {
@@ -225,7 +225,7 @@ public class Dao {
      * 设置课程时间（一个老师的一门课程可能由多个上课时间，参数就是这两个）
      *
      * @param courseid 课程的主键_id
-     * @param time     课程的时间一天5节课，周一到周日
+     * @param time     课程的时间一天4节课，周一到周5  0开始
      * @return
      */
     private boolean updateCourseTime(int courseid, String time) {
@@ -279,17 +279,17 @@ public class Dao {
      * 签到
      *
      * @param studentid    学生id
-     * @param time         年月日
-     * @param coursetimeid 课程id（老师和课程名组成）
+     * @param time         哪节课
      * @return
      */
-    public boolean checkIn(String studentid, String time, int coursetimeid) {
+    public boolean checkIn(String studentid, int time, String date,int courseId) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("studentid", studentid);
         contentValues.put("time", time);
-        contentValues.put("coursetimeid", coursetimeid);
+        contentValues.put("date", date);
+        contentValues.put("courseid", courseId);
         long id = writableDatabase.insert("tb_check", null, contentValues);
         return id != -1;
     }
@@ -304,14 +304,15 @@ public class Dao {
      * @param date 课程id（老师和课程名组成）
      * @return
      */
-    public boolean querycheckIn(String studentid, int time, String date) {
+    public boolean querycheckIn(String studentid, int time, String date,int courseId) {
         writableDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("studentid", studentid);
         contentValues.put("time", time);
         contentValues.put("date", date);
-        Cursor cursor = readableDatabase.query("tb_check", null, "studentid=? and time=? and date=?", new String[]{studentid,time+"",date}, null, null, null);
+        contentValues.put("courseid", courseId);
+        Cursor cursor = readableDatabase.query("tb_check", null, "studentid=? and time=? and date=? and courseid=?", new String[]{studentid,time+"",date,courseId+""}, null, null, null);
         if (cursor.moveToNext()) {
             return true;
         }

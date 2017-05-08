@@ -53,12 +53,12 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 "date text," +//年月日时分秒
                 "studentid text)");
 
-        db.execSQL("create table tb_leave(" +
-                "_id integer primary key autoincrement," +
-                "coursetimeid integer," +
-                "time text," +//年月日
-                "studentid integer," +
-                "unique  (coursetimeid,time,studentid))");
+//        db.execSQL("create table tb_leave(" +
+//                "_id integer primary key autoincrement," +
+//                "coursetimeid integer," +
+//                "time text," +//年月日
+//                "studentid integer," +
+//                "unique  (coursetimeid,time,studentid))");
 
     }
 

@@ -6,6 +6,8 @@ import com.zyr.entity.CheckInfo;
 import com.zyr.entity.Student;
 import com.zyr.teacher.db.Dao;
 import com.zyr.ui.activity.CheckInfoActivity;
+import com.zyr.ui.adapter.BaseListRefreshAdapter;
+import com.zyr.ui.fragment.RefreshBaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,23 +18,29 @@ import java.util.List;
 
 public class CheckInfoActivityTeacher extends CheckInfoActivity {
     @Override
-    public List<CheckInfo> requestAllStudentByCourseId(SwipeRefreshLayout swipeRefreshLayout) {
+    public void requestAllStudentByCourseId(SwipeRefreshLayout swipeRefreshLayout, BaseListRefreshAdapter<CheckInfo> baseListRefreshAdapter) {
         Dao dao=new Dao(mContext);
         CheckInfo checkInfo;
         ArrayList<CheckInfo> checkInfos= new ArrayList<>();
         List<Student> students = dao.queryStudentsByCourseId(course.getId());
         for (Student student : students) {
-            boolean b = dao.querycheckIn(student.getStudentid(), courseTime, courseDate);
-             checkInfo = new CheckInfo();
+            boolean b = dao.querycheckIn(student.getStudentid(), courseTime, courseDate,course.getId());
+            checkInfo = new CheckInfo();
             checkInfo.setCheck(b);
             checkInfo.setStudent(student);
             checkInfos.add(checkInfo);
         }
-        return checkInfos;
+        baseListRefreshAdapter.setData(checkInfos);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public List<CheckInfo> requestSelf(SwipeRefreshLayout swipeRefreshLayout) {
-        return null;
+    public void checkIn(RefreshBaseFragment<CheckInfo> fragment) {
+        toast("签到");
+    }
+
+    @Override
+    public void requestSelf(SwipeRefreshLayout swipeRefreshLayout, BaseListRefreshAdapter<CheckInfo> baseListRefreshAdapter) {
+
     }
 }

@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.zyr.entity.BaseEntity;
+import com.zyr.entity.CheckInfo;
 import com.zyr.entity.Course;
 import com.zyr.entity.Student;
 import com.zyr.teacher.db.Dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,22 +63,61 @@ public class Helper {
                 String studentid5 = parse.get("studentid");
                 responseJson = queryCourseByStudentId(studentid5);
                 break;
+            case "requestAllStudentByCourseId":
+                String courseid6 = parse.get("courseid");
+                String courseTime = parse.get("courseTime");
+                String courseDate = parse.get("courseDate");
+                responseJson = requestAllStudentByCourseId(courseid6, courseTime, courseDate);
+                break;
+            case "checkIn":
+                String courseid7 = parse.get("courseid");
+                String courseTime7 = parse.get("courseTime");
+                String courseDate7 = parse.get("courseDate");
+                String studentid7 = parse.get("studentid");
+                responseJson = checkIn(studentid7, courseTime7, courseDate7, Integer.valueOf(courseid7));
+                break;
         }
         return responseJson;
     }
 
+    private String checkIn(String studentid, String courseTime7, String courseDate7, Integer courseid7) {
+        BaseEntity entity = new BaseEntity();
+        boolean b = dao.checkIn(studentid, Integer.parseInt(courseTime7), courseDate7, courseid7);
+        entity.setResultCode(b ? 1 : 0);
+        return gson.toJson(entity);
+    }
+
+    private String requestAllStudentByCourseId(String courseid6, String courseTime, String courseDate) {
+        BaseEntity<List<CheckInfo>> entity = new BaseEntity();
+        List<CheckInfo> checkInfos = new ArrayList<>();
+        CheckInfo checkInfo = null;
+        List<Student> students = dao.queryStudentsByCourseId(Integer.valueOf(courseid6));
+        for (Student student : students) {
+            boolean b = dao.querycheckIn(student.getStudentid(), Integer.valueOf(courseTime), courseDate, Integer.parseInt(courseid6));
+            checkInfo = new CheckInfo();
+            checkInfo.setCheck(b);
+            checkInfo.setStudent(student);
+            checkInfos.add(checkInfo);
+        }
+        entity.setResultCode(1);
+        entity.setData(checkInfos);
+        return gson.toJson(entity);
+    }
+
     /**
      * 通过学号，查询所有课程
+     *
      * @param studentid5
      * @return
      */
     private String queryCourseByStudentId(String studentid5) {
         BaseEntity<List<Course>> entity = new BaseEntity();
         List<Course> courses = null;
-        courses=dao.queryCheckedCourseByStudet(studentid5);
+        courses = dao.queryCheckedCourseByStudet(studentid5);
         entity.setResultCode(1);
         entity.setData(courses);
-        return gson.toJson(entity);    }
+        return gson.toJson(entity);
+    }
 
     /**
      * 学生选课

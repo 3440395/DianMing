@@ -31,6 +31,7 @@
                 android:textSize="30sp" />
 
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name"
@@ -41,6 +42,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_check"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +50,7 @@
             android:layout_marginRight="25dp"
             android:text="未签到"
             android:textColor="@color/scheme_red_dark"
-            android:textSize="25sp" />
+            android:textSize="22sp" />
     </RelativeLayout>
 
 
