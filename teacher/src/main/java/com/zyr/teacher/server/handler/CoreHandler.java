@@ -1,6 +1,8 @@
 package com.zyr.teacher.server.handler;
 
 
+import android.util.Log;
+
 import com.yanzhenjie.andserver.RequestHandler;
 import com.zyr.common.App;
 import com.zyr.teacher.Helper;
@@ -34,6 +36,9 @@ public class CoreHandler implements RequestHandler {
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
         Map<String, String> parse = RequestParser.parse(request);
         String action = parse.get("action");
+
+        Log.e(TAG,"handle action--->"+action);
+
         responseJson=helper.handOut(action,parse);
         StringEntity stringEntity = new StringEntity(responseJson, "utf-8");
         response.setEntity(stringEntity);

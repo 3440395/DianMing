@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
@@ -47,14 +48,17 @@ public class CoreService extends Service {
     private Server.Listener mListener = new Server.Listener() {
         @Override
         public void onStarted() {
+            Toast.makeText(CoreService.this, "服务端已启动", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onStopped() {
+            Toast.makeText(CoreService.this, "服务端已停止", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(Exception e) {
+            Toast.makeText(CoreService.this, "服务端已启动", Toast.LENGTH_SHORT).show();
         }
     };
 
