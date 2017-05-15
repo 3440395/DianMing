@@ -41,7 +41,7 @@ public class UrlUtil {
      * wifi 状态改变时更新ip，并且要重新初始化retrofit
      */
     public void updateIp() {
-        if (serverAddress != NetUtil.getIPAddress(context)) {
+        if (serverAddress != NetUtil.getserverAddress(context)) {
             serverAddress=NetUtil.getIPAddress(context);
             Networks.getInstance().initRetrofit(getUrl());
         }
